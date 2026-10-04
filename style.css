@@ -36,3 +36,10 @@ body{background:radial-gradient(ellipse 65% 600px at 80% 0,rgba(57,83,143,.14),t
 }
 @media(max-width:600px){.header{width:94%;height:74px;margin-top:12px;padding-inline:12px;border-radius:15px}.header nav{gap:12px}.header .wordmark{font-size:22px}.project-visual{border-radius:15px}.hero{padding-top:46px}}
 @media(prefers-reduced-transparency:reduce){.header,.visit-pill{background:#171e2b;-webkit-backdrop-filter:none;backdrop-filter:none}}
+
+/* A reversible little accident, confined to the hero heading. */
+.break-control{margin-top:26px;display:flex;align-items:center;gap:15px;flex-wrap:wrap;min-height:44px}
+.break-button{font:inherit;font-size:13px;color:#c2cde1;background:rgba(24,31,45,.75);border:1px solid rgba(177,197,240,.2);border-radius:30px;padding:11px 17px;min-height:44px;cursor:pointer;transition:background .2s,border-color .2s}
+.break-button[hidden]{display:none}.break-button:hover{background:#25334c;border-color:#7d9bd9}.break-button:focus-visible{outline:3px solid var(--blue);outline-offset:4px}.break-button span{margin-left:9px;color:#9bb7ff}.break-button[aria-pressed="true"]{color:#e0e9ff;border-color:#6d87b9}.break-status{font-size:12px;color:#a8b4ca}
+.headline-pieces{position:absolute;inset:0;pointer-events:none}.headline-piece{position:absolute;display:block;white-space:pre;transform-origin:center;transition:transform .8s cubic-bezier(.22,.75,.25,1);will-change:transform}.hero h1.headline-active .headline-source{opacity:0}.hero h1.headline-broken .headline-piece{transform:translate(var(--scatter-x),var(--scatter-y)) rotate(var(--scatter-angle))}.headline-active .period{animation-play-state:paused}
+@media(max-width:600px){.break-control{gap:8px;margin-top:22px}.break-status{flex-basis:100%}.break-button{font-size:12px}}

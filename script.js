@@ -71,3 +71,78 @@ window.addEventListener('scroll', () => {
   if (!scheduled) { scheduled = true; requestAnimationFrame(updateProgress); }
 }, {passive:true});
 window.addEventListener('resize', updateProgress); updateProgress();
+
+// Split only the visual copy; the heading keeps a stable accessible name.
+const breakButton = document.querySelector('.break-button');
+const headline = document.getElementById('hero-title');
+const headlineSource = headline.querySelector('.headline-source');
+const pieces = headline.querySelector('.headline-pieces');
+const breakStatus = document.querySelector('.break-status');
+let broken = false;
+let restoreTimer;
+
+function buildPieces() {
+  pieces.replaceChildren();
+  const bounds = headline.getBoundingClientRect();
+  const walker = document.createTreeWalker(headlineSource, NodeFilter.SHOW_TEXT);
+  let node;
+  while ((node = walker.nextNode())) {
+    const style = getComputedStyle(node.parentElement);
+    for (let i = 0; i < node.textContent.length; i++) {
+      if (!node.textContent[i].trim()) continue;
+      const range = document.createRange();
+      range.setStart(node, i); range.setEnd(node, i + 1);
+      const box = range.getBoundingClientRect();
+      const letter = document.createElement('span');
+      letter.className = 'headline-piece';
+      letter.textContent = node.textContent[i];
+      const x = box.left - bounds.left;
+      const y = box.top - bounds.top;
+      Object.assign(letter.style, {
+        left: `${x}px`, top: `${y}px`, fontFamily: style.fontFamily,
+        fontSize: style.fontSize, fontWeight: style.fontWeight,
+        fontStyle: style.fontStyle, lineHeight: `${box.height}px`,
+        letterSpacing: style.letterSpacing, color: style.color
+      });
+      // Keep the playful mess inside the heading, away from navigation.
+      const margin = Math.min(18, bounds.width * 0.04);
+      const maxX = Math.max(margin, bounds.width - box.width - margin);
+      const targetX = Math.min(maxX, Math.max(margin, x + (Math.random() - 0.5) * bounds.width * 0.45));
+      const targetY = Math.max(0, bounds.height - box.height - 12 - Math.random() * bounds.height * 0.22);
+      letter.style.setProperty('--scatter-x', `${targetX - x}px`);
+      letter.style.setProperty('--scatter-y', `${targetY - y}px`);
+      letter.style.setProperty('--scatter-angle', `${(Math.random() - 0.5) * 36}deg`);
+      pieces.append(letter);
+    }
+  }
+}
+function restoreHeadline(instant = false) {
+  broken = false;
+  clearTimeout(restoreTimer);
+  headline.classList.remove('headline-broken');
+  breakButton.setAttribute('aria-pressed', 'false');
+  breakButton.innerHTML = 'Let me break your website <span aria-hidden="true">✳</span>';
+  breakStatus.textContent = 'All fixed. Probably.';
+  const finish = () => { headline.classList.remove('headline-active'); pieces.replaceChildren(); };
+  if (instant || reduced) finish();
+  else restoreTimer = setTimeout(finish, 820);
+}
+if (breakButton && headlineSource && pieces) {
+  breakButton.hidden = false;
+  breakButton.addEventListener('click', () => {
+    if (broken) { restoreHeadline(); return; }
+    clearTimeout(restoreTimer);
+    buildPieces();
+    headline.classList.add('headline-active');
+    // Establish starting positions before transitioning to the scattered ones.
+    void pieces.offsetWidth;
+    headline.classList.add('headline-broken');
+    broken = true;
+    breakButton.setAttribute('aria-pressed', 'true');
+    breakButton.innerHTML = 'Put it back <span aria-hidden="true">↺</span>';
+    breakStatus.textContent = 'Well, you did ask.';
+  });
+  window.addEventListener('resize', () => {
+    if (broken || headline.classList.contains('headline-active')) restoreHeadline(true);
+  });
+}
