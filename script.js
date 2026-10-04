@@ -146,3 +146,80 @@ if (breakButton && headlineSource && pieces) {
     if (broken || headline.classList.contains('headline-active')) restoreHeadline(true);
   });
 }
+
+// Layer k contains exactly 2k - 1 dots; after k layers the count is k².
+const beautyTrigger = document.querySelector('.beauty-trigger');
+const beautyDialog = document.querySelector('.beauty-dialog');
+const proofGrid = document.querySelector('.beauty-grid');
+const proofSlider = document.getElementById('square-size');
+const proofOutput = document.getElementById('square-size-value');
+const proofEquation = document.querySelector('.beauty-equation');
+const proofLayerText = document.querySelector('.beauty-layer');
+const proofAnnouncement = document.querySelector('.beauty-announcement');
+const proofColors = ['#b4c8ff','#7fa7ff','#71c7ed','#79dcc7','#b4e18b','#e5dc91','#f2bd90','#eaa4b7','#cba7ee','#a7b3ff'];
+let proofTimer = null;
+let proofSize = 6;
+let proofStep = 0;
+let previousOverflow = '';
+function stopProof() { clearTimeout(proofTimer); proofTimer = null; }
+function showProofStep(k) {
+  proofStep = k;
+  proofGrid.querySelectorAll('.proof-dot').forEach(dot => dot.classList.toggle('lit', Number(dot.dataset.layer) <= k));
+  proofEquation.replaceChildren();
+  for (let i = 1; i <= k; i++) {
+    if (i > 1) { const plus = document.createElement('span'); plus.className = 'proof-plus'; plus.textContent = '+'; proofEquation.append(plus); }
+    const term = document.createElement('span'); term.textContent = String(2 * i - 1); term.style.color = proofColors[i - 1]; proofEquation.append(term);
+  }
+  const total = document.createElement('span'); total.className = 'proof-total'; total.textContent = ` = ${k}² = ${k * k}`; proofEquation.append(total);
+  proofLayerText.textContent = k === 1 ? 'One dot. The first square.' : `Layer ${k}: ${2 * k - 1} new dots. A ${k} × ${k} square.`;
+  proofGrid.setAttribute('aria-label', `${k * k} illuminated dots forming a ${k} by ${k} square; ${k} of ${proofSize} layers complete.`);
+  document.querySelector('.beauty-dimension').textContent = `${k} × ${k}`;
+  if (k === proofSize) proofAnnouncement.textContent = `Complete: the first ${k} odd numbers add to ${k * k}, forming a ${k} by ${k} square.`;
+}
+function buildProof(animate = true) {
+  stopProof();
+  proofSize = Number(proofSlider.value);
+  proofOutput.textContent = `${proofSize} × ${proofSize}`;
+  proofSlider.setAttribute('aria-valuetext', `${proofSize} by ${proofSize} square`);
+  proofGrid.style.setProperty('--n', proofSize);
+  proofGrid.replaceChildren();
+  proofAnnouncement.textContent = '';
+  for (let row = 0; row < proofSize; row++) {
+    for (let col = 0; col < proofSize; col++) {
+      const layer = Math.max(row, col) + 1;
+      const dot = document.createElement('span'); dot.className = 'proof-dot'; dot.dataset.layer = layer;
+      dot.setAttribute('aria-hidden','true'); dot.style.setProperty('--dot-color',proofColors[layer - 1]); proofGrid.append(dot);
+    }
+  }
+  if (reduced || !animate) { showProofStep(proofSize); return; }
+  showProofStep(1);
+  const advance = () => {
+    if (!beautyDialog.open) return;
+    if (reduced) { showProofStep(proofSize); return; }
+    showProofStep(proofStep + 1);
+    if (proofStep < proofSize) proofTimer = setTimeout(advance, 650);
+  };
+  if (proofSize > 1) proofTimer = setTimeout(advance, 650);
+}
+if (beautyTrigger && beautyDialog && typeof beautyDialog.showModal === 'function') {
+  beautyTrigger.hidden = false;
+  beautyTrigger.addEventListener('click', () => {
+    previousOverflow = document.body.style.overflow;
+    beautyDialog.showModal(); document.body.style.overflow = 'hidden';
+    buildProof();
+  });
+  beautyDialog.querySelector('.beauty-close').addEventListener('click', () => beautyDialog.close());
+  beautyDialog.addEventListener('close', () => {
+    stopProof(); document.body.style.overflow = previousOverflow; beautyTrigger.focus();
+  });
+  beautyDialog.addEventListener('click', event => {
+    if (event.target !== beautyDialog) return;
+    const rect = beautyDialog.getBoundingClientRect();
+    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) beautyDialog.close();
+  });
+  proofSlider.addEventListener('input', () => buildProof(false));
+  document.querySelector('.beauty-replay').addEventListener('click', () => buildProof());
+  new MutationObserver(() => {
+    if (reduced && beautyDialog.open) { stopProof(); showProofStep(proofSize); }
+  }).observe(root, {attributes:true,attributeFilter:['data-reduced-motion']});
+}

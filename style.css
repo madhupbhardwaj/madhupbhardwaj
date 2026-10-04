@@ -43,3 +43,28 @@ body{background:radial-gradient(ellipse 65% 600px at 80% 0,rgba(57,83,143,.14),t
 .break-button[hidden]{display:none}.break-button:hover{background:#25334c;border-color:#7d9bd9}.break-button:focus-visible{outline:3px solid var(--blue);outline-offset:4px}.break-button span{margin-left:9px;color:#9bb7ff}.break-button[aria-pressed="true"]{color:#e0e9ff;border-color:#6d87b9}.break-status{font-size:12px;color:#a8b4ca}
 .headline-pieces{position:absolute;inset:0;pointer-events:none}.headline-piece{position:absolute;display:block;white-space:pre;transform-origin:center;transition:transform .8s cubic-bezier(.22,.75,.25,1);will-change:transform}.hero h1.headline-active .headline-source{opacity:0}.hero h1.headline-broken .headline-piece{transform:translate(var(--scatter-x),var(--scatter-y)) rotate(var(--scatter-angle))}.headline-active .period{animation-play-state:paused}
 @media(max-width:600px){.break-control{gap:8px;margin-top:22px}.break-status{flex-basis:100%}.break-button{font-size:12px}}
+
+/* An interactive proof, drawn with exact dot counts. */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.beauty-trigger{border-color:rgba(140,170,255,.35);color:#dae5ff}
+.beauty-dialog{width:min(620px,calc(100% - 24px));max-height:calc(100dvh - 32px);padding:0;border:1px solid #35415b;border-radius:26px;background:#111722;color:#edf2ff;box-shadow:0 40px 130px #000a;overflow:auto;overscroll-behavior:contain}
+.beauty-dialog::backdrop{background:rgba(3,5,10,.82);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.beauty-dialog[open]{animation:beauty-open .4s cubic-bezier(.2,.8,.2,1)}
+.beauty-shell{padding:26px 34px 30px;background:radial-gradient(ellipse at 80% 15%,#253e652f,transparent 65%)}
+.beauty-top{display:flex;align-items:center;justify-content:space-between;gap:14px}.beauty-eyebrow{font-size:11px;letter-spacing:1.6px;color:#9dafcd}
+.beauty-close{width:44px;height:44px;flex-shrink:0;border:1px solid #38435a;border-radius:50%;background:#202a3b;color:#dfe9ff;font-size:28px;cursor:pointer}
+.beauty-dialog h2{font-size:clamp(32px,6vw,48px);line-height:1.07;letter-spacing:-1.7px;margin:8px 0 14px;font-weight:500}.beauty-dialog h2 em{font-family:'Instrument Serif',Georgia,serif;font-weight:400;color:#aac2ff}
+#beauty-description{color:#b3c0d5;font-size:15px;margin:0 0 20px;line-height:1.5}
+.beauty-stage{position:relative;display:grid;place-items:center;padding:24px 28px 36px;border:1px solid #35445c85;border-radius:18px;background:radial-gradient(ellipse at center,#24375166,#0b111ccc);box-shadow:inset 0 1px 0 #ffffff06}
+.beauty-grid{display:grid;grid-template-columns:repeat(var(--n),1fr);grid-template-rows:repeat(var(--n),1fr);gap:clamp(5px,1.6vw,11px);width:min(100%,260px);aspect-ratio:1}
+.proof-dot{align-self:center;justify-self:center;width:100%;max-width:24px;aspect-ratio:1;border-radius:50%;background:var(--dot-color);opacity:.07;transform:scale(.65);transition:opacity .4s,transform .55s cubic-bezier(.2,1.6,.4,1),box-shadow .4s}
+.proof-dot.lit{opacity:1;transform:scale(1);box-shadow:0 0 14px color-mix(in srgb,var(--dot-color) 23%,transparent)}
+.beauty-dimension{position:absolute;bottom:10px;color:#91a4c5;font-size:12px;letter-spacing:2px}
+.beauty-equation{min-height:50px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px;padding-top:18px;font-size:clamp(16px,3.5vw,22px);font-variant-numeric:tabular-nums;line-height:1.5}.beauty-equation .proof-total{color:#f1f5ff;font-weight:600}.proof-plus{color:#71819e}
+.beauty-layer{min-height:22px;text-align:center;font-size:13px;color:#acbad1;margin:4px 0 19px}
+.beauty-controls{display:flex;gap:22px;align-items:center}.beauty-range{flex:1;min-width:0}.beauty-range label{display:flex;justify-content:space-between;gap:10px;font-size:14px;color:#c7d3e7}.beauty-range output{color:#9ebcff;font-variant-numeric:tabular-nums}.beauty-range input{display:block;width:100%;height:36px;margin:4px 0 0;accent-color:#a2bcff;cursor:pointer}
+.beauty-replay{min-height:44px;padding:10px 15px;border:1px solid #455b7c;border-radius:24px;background:#22314a;color:#e7efff;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}.beauty-replay span{margin-left:5px}.beauty-replay:hover,.beauty-close:hover{background:#304468}
+.beauty-dialog button:focus-visible,.beauty-dialog input:focus-visible{outline:3px solid #a9c3ff;outline-offset:4px}
+.beauty-insight{margin-top:22px;border-top:1px solid #303c51;padding-top:18px}.beauty-insight>span{color:#93a7c7;font-size:10px;letter-spacing:1.5px}.beauty-insight p{font-size:clamp(16px,3.5vw,21px);margin:7px 0;color:#dbe6ff}.beauty-insight small{display:block;color:#a8b7cf;font-size:13px;line-height:1.65}
+@keyframes beauty-open{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+@media(max-width:480px){.beauty-shell{padding:18px 20px 24px}.beauty-dialog{border-radius:20px}.beauty-stage{padding:18px 24px 30px}.beauty-grid{width:min(100%,220px)}.beauty-controls{gap:12px}.beauty-replay{font-size:12px;padding-inline:12px}.beauty-eyebrow{font-size:9px;letter-spacing:1px}.beauty-equation{gap:5px}.break-status{flex-basis:100%}}
