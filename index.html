@@ -1,251 +1,54 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Madhup | Portfolio</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      color: #fff;
-      background: linear-gradient(135deg, #3a1c71 0%, #d76d77 50%, #ffaf7b 100%);
-      background-attachment: fixed;
-      overflow: hidden;
-      position: relative;
-    }
-
-    /* Soft glowing blobs behind the glass */
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.7;
-      z-index: 0;
-    }
-    .blob.one { width: 320px; height: 320px; background: #6a5af9; top: -80px; left: -60px; }
-    .blob.two { width: 280px; height: 280px; background: #00d4ff; bottom: -60px; right: -40px; }
-    .blob.three { width: 220px; height: 220px; background: #ff6ec4; bottom: 20%; left: 12%; }
-
-    /* Glow that follows the cursor */
-    .cursor-glow {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 320px;
-      height: 320px;
-      margin: -160px 0 0 -160px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 70%);
-      pointer-events: none;
-      z-index: 2;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      will-change: transform;
-    }
-    .cursor-glow.active { opacity: 1; }
-
-    .glass {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 560px;
-      padding: 3rem 2.5rem;
-      text-align: center;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      border-radius: 24px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-      -webkit-backdrop-filter: blur(18px);
-      backdrop-filter: blur(18px);
-      transform-style: preserve-3d;
-      transition: transform 0.15s ease-out, box-shadow 0.3s ease, background 0.3s ease;
-      overflow: hidden;
-    }
-
-    .glass:hover {
-      background: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
-    }
-
-    /* Light sheen that follows the cursor inside the card */
-    .glass::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(
-        280px circle at var(--mx, 50%) var(--my, 50%),
-        rgba(255, 255, 255, 0.28),
-        transparent 60%
-      );
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-    }
-    .glass:hover::before { opacity: 1; }
-
-    h1 {
-      position: relative;
-      font-size: clamp(2rem, 6vw, 3rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.75rem;
-    }
-
-    p {
-      position: relative;
-      font-size: 1.05rem;
-      color: rgba(255, 255, 255, 0.85);
-    }
-
-    /* Buttons */
-    .actions {
-      position: relative;
-      margin-top: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.9rem;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.65rem;
-      padding: 0.8rem 1.5rem;
-      font: inherit;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #fff;
-      text-decoration: none;
-      cursor: pointer;
-      background: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      border-radius: 999px;
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
-      transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-    }
-    .btn:hover,
-    .btn:focus-visible {
-      background: rgba(255, 255, 255, 0.32);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-      outline: none;
-    }
-
-    .btn .chevron {
-      display: inline-block;
-      transition: transform 0.3s ease;
-    }
-    .btn[aria-expanded="true"] .chevron { transform: rotate(180deg); }
-
-    .projects {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.8rem;
-      max-height: 0;
-      opacity: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease, opacity 0.3s ease;
-    }
-    .projects.open {
-      max-height: 200px;
-      opacity: 1;
-      /* room so button hover shadows aren't clipped */
-      padding: 0.35rem 0.5rem 0.6rem;
-    }
-
-    .btn img {
-      width: 22px;
-      height: 22px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 2px;
-      object-fit: contain;
-    }
-
-    /* Skip motion effects for people who prefer reduced motion, and on touch screens */
-    @media (prefers-reduced-motion: reduce), (hover: none) {
-      .cursor-glow { display: none; }
-      .glass { transition: none; }
-    }
-  </style>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101112">
+  <title>Madhup — Student & Builder</title>
+  <meta name="description" content="Madhup's corner of the internet. Exploring mathematics and building focused tools for learning. Explore ProblemSlate and ProblemSet.">
+  <meta property="og:title" content="Madhup — Student & Builder"><meta property="og:description" content="Thoughtful tools. Difficult problems. A little curiosity."><meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232e64ff'/%3E%3Cpath d='M15 46V18l17 17 17-17v28' fill='none' stroke='white' stroke-width='6'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css"><script src="script.js" defer></script>
 </head>
 <body>
-  <div class="blob one"></div>
-  <div class="blob two"></div>
-  <div class="blob three"></div>
-  <div class="cursor-glow" id="glow"></div>
-
-  <main class="glass" id="card">
-    <h1>Meet Madhup</h1>
-    <p>Portfolio coming soon.</p>
-
-    <div class="actions">
-      <button class="btn" id="toggle" type="button" aria-expanded="false" aria-controls="projects">
-        See my projects <span class="chevron" aria-hidden="true">&#9662;</span>
-      </button>
-
-      <div class="projects" id="projects">
-        <a class="btn" href="https://problemset.in" target="_blank" rel="noopener noreferrer">
-          <img src="https://www.google.com/s2/favicons?domain=problemset.in&sz=64" alt="" onerror="this.style.display='none'">
-          ProblemSet
-        </a>
-        <a class="btn" href="https://problemslate.vercel.app" target="_blank" rel="noopener noreferrer">
-          <img src="https://www.google.com/s2/favicons?domain=problemslate.vercel.app&sz=64" alt="" onerror="this.style.display='none'">
-          ProblemSlate
-        </a>
-      </div>
-    </div>
-  </main>
-
-  <script>
-    const glow = document.getElementById('glow');
-    const card = document.getElementById('card');
-    const toggle = document.getElementById('toggle');
-    const projects = document.getElementById('projects');
-
-    // Show / hide the project buttons
-    toggle.addEventListener('click', () => {
-      const open = projects.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', open);
-    });
-
-    const canHover = window.matchMedia('(hover: hover)').matches &&
-                     !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (canHover) {
-      // Glow follows the cursor across the page
-      window.addEventListener('mousemove', (e) => {
-        glow.classList.add('active');
-        glow.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-      });
-      document.addEventListener('mouseleave', () => glow.classList.remove('active'));
-
-      // Card tilts slightly toward the cursor and shows a sheen
-      card.addEventListener('mousemove', (e) => {
-        const r = card.getBoundingClientRect();
-        const x = e.clientX - r.left;
-        const y = e.clientY - r.top;
-        const rotY = ((x / r.width) - 0.5) * 10;
-        const rotX = ((y / r.height) - 0.5) * -10;
-        card.style.setProperty('--mx', x + 'px');
-        card.style.setProperty('--my', y + 'px');
-        card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-4px)`;
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-      });
-    }
-  </script>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"></div>
+<header class="header wrap">
+  <a class="wordmark" href="#" aria-label="Madhup home">madhup<span>✳</span></a>
+  <nav aria-label="Main navigation"><a href="#work">Selected work <span>02</span></a><a href="#about">About me</a></nav>
+  <span class="header-note">Student. Builder. Curious human.</span>
+</header>
+<main id="main">
+<section class="hero wrap" aria-labelledby="hero-title">
+  <div class="eyebrow intro">INDEPENDENT PROJECTS / AN OPEN NOTEBOOK</div>
+  <h1 id="hero-title" class="intro">Curiosity.<br>Made <span class="serif">tangible.</span><span class="period">*</span></h1>
+  <div class="hero-bottom intro"><p>Hey, I’m Madhup — a student who loves<br class="desktop-break"> mathematics and building things that help.</p><a class="round-link" href="#work"><span class="round-icon" aria-hidden="true">↓</span><span>Explore my work</span></a></div>
+  <div class="hero-foot"><span>BASED IN INDIA</span><span>SCROLL TO DISCOVER</span><span>IDEAS → EXPERIMENTS → PROJECTS</span></div>
+</section>
+<section id="work" class="work wrap" aria-labelledby="work-title">
+  <div class="section-head reveal"><h2 id="work-title">Selected work<span> / 01—02</span></h2><p>Small tools. A clearer way to think.</p></div>
+  <article class="project reveal">
+    <a class="project-visual slate-visual" href="https://problemslate.vercel.app" target="_blank" rel="noopener noreferrer" aria-label="Visit ProblemSlate (opens in a new tab)">
+      <div class="visual-top"><span>01 / PROBLEMSLATE</span><span>DESKTOP APP</span></div>
+      <div class="project-art"><img src="assets/problemslate.jpg" alt="ProblemSlate website showing its focused whiteboard and drawing tools" width="1348" height="926" loading="lazy"></div>
+      <span class="visual-caption">A LITTLE SPACE TO THINK.</span><span class="visit-pill">Explore project</span>
+    </a>
+    <div class="project-info"><div><h3>ProblemSlate</h3><p>A quiet canvas for working things out.</p></div><p class="project-description">A focused whiteboard for macOS and Windows. Write, sketch, and give your next problem the space it needs.</p><div class="tags"><span>Whiteboard</span><span>macOS & Windows</span></div></div>
+  </article>
+  <article class="project reveal">
+    <a class="project-visual set-visual" href="https://problemset.in" target="_blank" rel="noopener noreferrer" aria-label="Visit ProblemSet (opens in a new tab)">
+      <div class="visual-top"><span>02 / PROBLEMSET</span><span>WEB PROJECT</span></div>
+      <div class="project-art"><img src="assets/problemset.jpg" alt="ProblemSet website with mathematics practice organized by topic" width="1348" height="926" loading="lazy"></div>
+      <span class="visual-caption">FOR THE LOVE OF THE PROBLEM.</span><span class="visit-pill">Explore project</span>
+    </a>
+    <div class="project-info"><div><h3>ProblemSet</h3><p>Less scrolling. More solving.</p></div><p class="project-description">Curated math practice, organized by topic — from number theory to calculus. Built to keep the focus on the next question.</p><div class="tags"><span>Mathematics</span><span>Focused practice</span></div></div>
+  </article>
+</section>
+<section id="about" class="about wrap" aria-labelledby="about-title">
+  <div class="about-label reveal"><span class="eyebrow">A BIT ABOUT ME</span><span class="asterisk" aria-hidden="true">✳</span></div>
+  <div class="about-content reveal"><h2 id="about-title">Still learning.<br><span class="serif">Always making.</span></h2><p>I’m Madhup, a high school student in India with a love for mathematics and a curiosity for how things work.</p><p>I build tools around the way I learn — a place to work through an idea, a collection of problems worth spending time on. ProblemSlate and ProblemSet are part of that exploration.</p><div class="interests"><span>MATHEMATICS</span><span>BUILDING</span><span>LEARNING BY DOING</span></div></div>
+</section>
+<div class="closing wrap reveal"><p>One idea at a time.</p><a href="#work">See what I’m building</a></div>
+</main>
+<footer class="footer wrap"><a class="wordmark" href="#">madhup<span>✳</span></a><span>© <span id="year">2026</span> Madhup</span><a class="back-top" href="#">Back to top <span aria-hidden="true">↑</span></a></footer>
 </body>
 </html>
