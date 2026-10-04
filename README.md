@@ -1,86 +1,41 @@
-<div align="center">
+# Madhup: 3D trial
 
-# Madhup · Portfolio
+This is the full portfolio with an interactive Mobius strip between the introduction and the quote, a scroll-drawn sine curve beside the projects, and project previews that straighten as they enter view. It is a separate trial of the design.
 
-**Curiosity. Made tangible.**
+## Try it first
 
-A personal corner of the internet for mathematics, learning, and building things that help.
+Extract the ZIP and open `index.html` in Chrome, Safari, or Edge. Keep the files and the `assets` folder together. No installation or build command is needed.
 
-[ProblemSlate](https://problemslate.vercel.app) · [ProblemSet](https://problemset.in) · [My Papers](https://mypapers-madhup.vercel.app)
+The strip rotates slowly. Drag to rotate it yourself; on a phone, drag sideways. Vertical swipes still scroll the page. Surface and Wireframe change its appearance. Trace the edge follows its single continuous boundary, then stops. The icon buttons pause animation and reset the view. Keyboard users can focus the model and use the arrow keys or Home.
 
-**HTML · CSS · JavaScript**  
-Responsive design · Subtle motion · No build step
+The existing reduced-motion button also stops the sculpture. Manual rotation remains available. Devices without WebGL display a still image instead.
 
-</div>
+## Put this trial on GitHub / Vercel
 
----
+Upload the extracted files into the same repository folder as your current `index.html`. Do not upload the ZIP itself or nest this folder inside the site.
 
-## About
+Changed files:
 
-I'm Madhup, a high school student in India with a love for mathematics and a curiosity for how things work. This portfolio brings together the projects I build around the way I learn.
+- `index.html`
+- `style.css`
+- `script.js`
 
-The design pairs a dark background, oversized typography, and a blue accent with gentle animations and a simple layout that keeps the work in focus.
+New required files:
 
-## Featured projects
+- `assets/mobius.js` (includes Three.js; no external 3D script needed)
+- `assets/mobius-still.png`
+- `assets/THREE-LICENSE.txt`
 
-| Project | What it does | Visit |
-| --- | --- | --- |
-| **ProblemSet** | Curated mathematics practice organized by topic, from number theory to calculus. | [Explore ProblemSet ↗](https://problemset.in) |
-| **ProblemSlate** | A focused whiteboard for macOS and Windows — a place to write, sketch, and work through problems. | [Explore ProblemSlate ↗](https://problemslate.vercel.app) |
-| **My Papers** | A home for my mathematics papers and notes, with PDFs that open in a click. | [Read My Papers ↗](https://mypapers-madhup.vercel.app) |
+The project images are included for a complete local preview and are unchanged. Existing hosting settings can stay as they are. This version updates `script.js` too: upload all three main files and keep the `assets` folder together.
 
-## Features
+The wave follows normal page scrolling and retracts when you scroll upward. Reduced motion displays the complete curve and keeps project previews straight.
 
-- Responsive layouts for desktop, tablet, and mobile.
-- Three project showcases with direct links, including screenshots of ProblemSlate and ProblemSet.
-- Animated introductions, scroll reveals, and hover effects.
-- A reading-progress bar and back-to-top navigation.
-- Keyboard focus styles, a skip-to-content link, and reduced-motion support.
-- Plain HTML, CSS, and JavaScript with no dependencies to install.
+## Edit the quote
 
-## Run locally
+Search for `QUOTE CARD` in `index.html`. Edit the paragraph, or change `data-enabled="true"` to `data-enabled="false"` to hide the card.
 
-Open `index.html` in your browser, or serve the project from its root folder:
+## Verification
 
-```bash
-python3 -m http.server 8000
-```
+The scroll additions were also checked at 1440px, 390px, and 320px: the curve advances with scroll, each preview straightens, reduced motion produces a static view, and the gutter remains inside the viewport without horizontal overflow.
 
-Then open **http://localhost:8000**.
-
-## Deploy with GitHub and Vercel
-
-1. Create a GitHub repository and upload the website files, including the `assets` folder. Place `index.html` at the repository root.
-2. Import the repository into Vercel.
-3. Use the following settings:
-
-   | Setting | Value |
-   | --- | --- |
-   | Framework preset | `Other` |
-   | Root directory | `./` |
-   | Build command | Leave empty |
-   | Output directory | `.` |
-   | Install command | Leave empty |
-
-4. Deploy the project. Updates pushed to the connected production branch will trigger a new deployment.
-
-## Make it your own
-
-| File | What to edit |
-| --- | --- |
-| `index.html` | Name, bio, project descriptions, links, and page metadata. |
-| `style.css` | Colors, typography, spacing, responsive layouts, and animations. |
-| `script.js` | Scroll reveals, reading progress, and the footer year. |
-| `assets/problemslate.jpg` | ProblemSlate preview image. |
-| `assets/problemset.jpg` | ProblemSet preview image. |
-
-Fonts are loaded from Google Fonts, with system-font fallbacks. Project images and the website's styles and scripts are included locally.
-
----
-
-<div align="center">
-
-**Still learning. Always making.**  
-Made by Madhup.
-
-</div>
+Tested in Chromium with desktop (1440px) and phone (390px and 320px) viewports: visible model pixels and framing, mouse and touch rotation, keyboard controls, pause, reset, wireframe mode, the complete edge trace, reduced motion, vertical touch scrolling, and the no-WebGL fallback. The existing break-the-heading and maths-proof features also passed interaction checks. Physical iOS/Android hardware and Safari have not been tested.

@@ -223,3 +223,59 @@ if (beautyTrigger && beautyDialog && typeof beautyDialog.showModal === 'function
     if (reduced && beautyDialog.open) { stopProof(); showProofStep(proofSize); }
   }).observe(root, {attributes:true,attributeFilter:['data-reduced-motion']});
 }
+
+// Scroll-only work: no continuous animation loop and no interception of scrolling.
+(() => {
+  const work = document.getElementById('work');
+  if (!work) return;
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg');
+  svg.classList.add('scroll-wave');
+  svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false');
+  const track = document.createElementNS(ns, 'path'); track.classList.add('scroll-wave-track');
+  const line = document.createElementNS(ns, 'path'); line.classList.add('scroll-wave-line');
+  const tip = document.createElementNS(ns, 'circle'); tip.classList.add('scroll-wave-tip'); tip.setAttribute('r','2.7');
+  svg.append(track,line,tip); work.prepend(svg); work.classList.add('scroll-effects');
+  const previews = [...work.querySelectorAll('.project-art, .papers-title')].map((element,index) => {
+    element.dataset.scrollPreview = '';
+    return {element,visual:element.closest('.project-visual'),sign:index%2 ? -1 : 1};
+  });
+  let pending = false, length = 1, curveHeight = 0;
+  const clamp = value => Math.max(0, Math.min(1,value));
+  function rebuild() {
+    curveHeight = Math.max(1,work.offsetHeight);
+    const w = innerWidth <= 700 ? 12 : 28;
+    const amplitude = w * .32;
+    const commands = [];
+    for(let y=0;y<=curveHeight;y+=3) commands.push(`${y===0?'M':'L'}${(w/2 + amplitude*Math.sin(y/260*Math.PI*2)).toFixed(2)},${y}`);
+    commands.push(`L${(w/2 + amplitude*Math.sin(curveHeight/260*Math.PI*2)).toFixed(2)},${curveHeight}`);
+    svg.setAttribute('viewBox',`0 0 ${w} ${curveHeight}`);
+    track.setAttribute('d',commands.join(' ')); line.setAttribute('d',commands.join(' '));
+    length = line.getTotalLength(); line.style.strokeDasharray = String(length);
+    schedule();
+  }
+  function update() {
+    pending = false;
+    const still = root.dataset.reducedMotion === 'true';
+    const bounds = work.getBoundingClientRect();
+    const fraction = still ? 1 : clamp((innerHeight*.7-bounds.top)/curveHeight);
+    line.style.strokeDashoffset = String(length*(1-fraction));
+    const position = line.getPointAtLength(length*fraction);
+    tip.setAttribute('cx',position.x); tip.setAttribute('cy',position.y);
+    tip.style.opacity = fraction>0 && fraction<1 ? '1':'0';
+    for(const {element,visual,sign} of previews) {
+      const p = still ? 1 : clamp((innerHeight*.94-visual.getBoundingClientRect().top)/(innerHeight*.72));
+      const remaining = Math.pow(1-p,3);
+      element.style.setProperty('--settle-y',`${(remaining*16).toFixed(2)}px`);
+      element.style.setProperty('--settle-x',`${(remaining*7).toFixed(3)}deg`);
+      element.style.setProperty('--settle-z',`${(remaining*2.2*sign).toFixed(3)}deg`);
+    }
+  }
+  function schedule() { if(!pending) {pending=true;requestAnimationFrame(update);} }
+  window.addEventListener('scroll',schedule,{passive:true});
+  window.addEventListener('resize',rebuild);
+  new MutationObserver(schedule).observe(root,{attributes:true,attributeFilter:['data-reduced-motion']});
+  if('ResizeObserver' in window) new ResizeObserver(rebuild).observe(work);
+  document.fonts?.ready.then(rebuild);
+  rebuild();
+})();
