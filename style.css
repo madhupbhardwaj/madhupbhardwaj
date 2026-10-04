@@ -5,7 +5,12 @@
 .scroll-wave-track{fill:none;stroke:rgba(134,167,255,.13);stroke-width:1}
 .scroll-wave-line{fill:none;stroke:#86a7ff;stroke-width:1.5;stroke-linecap:round}
 .scroll-wave-tip{fill:#d3e1ff;stroke:#86a7ff;stroke-width:2}
-.scroll-effects .project-visual [data-scroll-preview]{transform:perspective(1300px) translateY(var(--settle-y,16px)) rotateX(var(--settle-x,7deg)) rotateZ(var(--settle-z,2deg));transition:none;transform-origin:50% 50%}
+.work.scroll-effects .project-visual [data-scroll-preview]{transform:perspective(1300px) translateY(var(--settle-y,16px)) rotateX(var(--settle-x,7deg)) rotateZ(var(--settle-z,2deg));transition:none;transform-origin:50% 50%}
+/* Individual transforms let hover lift coexist with scroll-driven rotation. */
+.work.scroll-effects .project-visual .project-art{translate:0 0;scale:1;transition:translate .45s cubic-bezier(.2,.75,.3,1),scale .45s cubic-bezier(.2,.75,.3,1),box-shadow .45s}
+@media(hover:hover) and (pointer:fine){.scroll-effects .project-visual:hover .project-art{translate:0 -10px;scale:1.025;box-shadow:0 34px 80px rgba(0,0,0,.6)}}
+.scroll-effects .project-visual:focus-visible .project-art{translate:0 -10px;scale:1.025;box-shadow:0 34px 80px rgba(0,0,0,.6)}
+html[data-reduced-motion="true"] .scroll-effects .project-visual .project-art{translate:none;scale:none}
 html[data-reduced-motion="true"] .scroll-effects [data-scroll-preview]{transform:none!important}
 html[data-reduced-motion="true"] .scroll-wave-line{opacity:.4}
 html[data-reduced-motion="true"] .scroll-wave-tip{display:none}
