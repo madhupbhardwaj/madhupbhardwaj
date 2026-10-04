@@ -3,22 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Portfolio</title>
+  <title>Madhup | Portfolio</title>
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: system-ui, -apple-system, sans-serif;
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 4rem 1.5rem;
-      line-height: 1.6;
-      color: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: #fff;
+      background: linear-gradient(135deg, #3a1c71 0%, #d76d77 50%, #ffaf7b 100%);
+      background-attachment: fixed;
+      overflow: hidden;
+      position: relative;
     }
-    h1 { margin-bottom: 0.25rem; }
-    p.tagline { color: #666; margin-top: 0; }
+
+    /* Soft glowing blobs behind the glass */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.7;
+      z-index: 0;
+    }
+    .blob.one { width: 320px; height: 320px; background: #6a5af9; top: -80px; left: -60px; }
+    .blob.two { width: 280px; height: 280px; background: #00d4ff; bottom: -60px; right: -40px; }
+    .blob.three { width: 220px; height: 220px; background: #ff6ec4; bottom: 20%; left: 12%; }
+
+    .glass {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 560px;
+      padding: 3rem 2.5rem;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(18px);
+    }
+
+    h1 {
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.85);
+    }
   </style>
 </head>
 <body>
-  <h1>My Portfolio</h1>
-  <p class="tagline">Coming soon.</p>
+  <div class="blob one"></div>
+  <div class="blob two"></div>
+  <div class="blob three"></div>
+
+  <main class="glass">
+    <h1>Meet Madhup</h1>
+    <p>Portfolio coming soon.</p>
+  </main>
 </body>
 </html>
