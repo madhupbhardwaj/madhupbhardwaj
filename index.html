@@ -8,7 +8,7 @@
   <meta property="og:title" content="Madhup — Student & Builder"><meta property="og:description" content="Thoughtful tools. Difficult problems. A little curiosity."><meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232e64ff'/%3E%3Cpath d='M15 46V18l17 17 17-17v28' fill='none' stroke='white' stroke-width='6'/%3E%3C/svg%3E">
   <script>try{const p=localStorage.getItem("portfolio-reduced-motion");document.documentElement.dataset.reducedMotion=String(p===null?matchMedia("(prefers-reduced-motion: reduce)").matches:p==="true")}catch{document.documentElement.dataset.reducedMotion=String(matchMedia("(prefers-reduced-motion: reduce)").matches)}</script>
-  <link rel="stylesheet" href="style.css?v=beauty-20261004-1"><script src="script.js?v=beauty-20261004-1" defer></script>
+  <link rel="stylesheet" href="style.css?v=quote-20261004-1"><script src="script.js?v=beauty-20261004-1" defer></script>
   <script>
   window.va = window.va || function () {
     (window.vaq = window.vaq || []).push(arguments);
@@ -17,6 +17,14 @@
 <script defer src="/_vercel/insights/script.js"></script>
 <style>
 .linkedin-button{display:inline-flex;align-items:center;gap:11px;margin-top:15px;padding:12px 19px;min-height:46px;border:1px solid rgba(160,190,255,.3);border-radius:30px;background:rgba(30,41,61,.75);color:#dbe7ff;font-size:14px;font-weight:500;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);transition:background .2s,border-color .2s}.linkedin-button svg{flex-shrink:0;color:#9bbaff}.linkedin-button:hover{background:#2b3d5d;border-color:#96b6ff}.linkedin-button:focus-visible{outline:3px solid #a9c3ff;outline-offset:4px}
+.break-control{display:flex;align-items:center;flex-wrap:wrap;gap:12px;min-height:44px;margin-top:26px}
+.break-button{min-height:44px;padding:10px 17px;border:1px solid rgba(177,197,240,.28);border-radius:30px;background:rgba(24,31,45,.75);color:#dbe5f8;font:inherit;font-size:13px;cursor:pointer;transition:background .2s,border-color .2s}
+.break-button[hidden]{display:none}.break-button:hover{background:#25334c;border-color:#7d9bd9}.break-button:focus-visible{outline:3px solid #a9c3ff;outline-offset:4px}.break-button span{margin-left:8px;color:#9bb7ff}.break-button[aria-pressed="true"]{border-color:#9bb7ff}.break-status{font-size:12px;color:#a8b4ca}
+.quote-card{position:relative;display:block;margin-top:32px;padding:52px 64px;border:1px solid rgba(255,255,255,.13);border-radius:8px;background:rgba(255,255,255,.035);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 12px 36px rgba(0,0,0,.12);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.quote-card[data-enabled="false"]{display:none}.quote-card blockquote{position:relative;margin:0;text-align:center}.quote-card blockquote p{margin:0;color:#f1f0ed;font-family:'Instrument Serif',Georgia,serif;font-size:34px;font-weight:400;line-height:1.4;letter-spacing:0;overflow-wrap:anywhere}
+.quote-symbol{position:absolute;top:12px;left:22px;font-family:Georgia,serif;font-size:64px;line-height:1;color:rgba(160,183,255,.5);pointer-events:none}.quote-symbol-end{top:auto;left:auto;right:22px;bottom:-8px}
+@media(max-width:600px){.break-control{gap:8px;margin-top:22px}.break-button{font-size:12px}.break-status{flex-basis:100%}.quote-card{margin-top:22px;padding:48px 26px}.quote-card blockquote p{font-size:26px}.quote-symbol{left:15px;font-size:52px}.quote-symbol-end{left:auto;right:15px;bottom:-4px}}
+@media(prefers-reduced-transparency:reduce){.quote-card{background:#191a1c;-webkit-backdrop-filter:none;backdrop-filter:none}}
 </style>
 </head>
 <body>
@@ -35,6 +43,12 @@
   <div class="hero-bottom intro"><p>Hey, I’m Madhup — a student who loves<br class="desktop-break"> mathematics and building things that help.</p><a class="round-link" href="#work"><span class="round-icon" aria-hidden="true">↓</span><span>Explore my work</span></a></div>
   <div class="break-control"><button class="break-button" type="button" aria-pressed="false" hidden>Let me break your website <span aria-hidden="true">✳</span></button><button class="beauty-trigger break-button" type="button" aria-haspopup="dialog" hidden>Convince me maths is beautiful <span aria-hidden="true">✧</span></button><span class="break-status" role="status" aria-live="polite"></span></div>
   <div class="hero-foot"><span>BASED IN INDIA</span><span>SCROLL TO DISCOVER</span><span>IDEAS → EXPERIMENTS → PROJECTS</span></div>
+</section>
+<!-- QUOTE CARD: set data-enabled="false" to hide; edit the paragraph to change your quote. -->
+<section class="quote-card wrap reveal" data-enabled="true" aria-label="A personal thought">
+  <span class="quote-symbol" aria-hidden="true">&ldquo;</span>
+  <blockquote><p>There is always another way to see the same problem.</p></blockquote>
+  <span class="quote-symbol quote-symbol-end" aria-hidden="true">&rdquo;</span>
 </section>
 <section id="work" class="work wrap" aria-labelledby="work-title">
   <div class="section-head reveal"><h2 id="work-title">Selected work<span> / 01—03</span></h2><p>Small tools. A clearer way to think.</p></div>
@@ -85,4 +99,3 @@
 </dialog>
 </body>
 </html>
-
