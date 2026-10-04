@@ -104,6 +104,75 @@
       color: rgba(255, 255, 255, 0.85);
     }
 
+    /* Buttons */
+    .actions {
+      position: relative;
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      padding: 0.8rem 1.5rem;
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 999px;
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .btn:hover,
+    .btn:focus-visible {
+      background: rgba(255, 255, 255, 0.32);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      outline: none;
+    }
+
+    .btn .chevron {
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+    .btn[aria-expanded="true"] .chevron { transform: rotate(180deg); }
+
+    .projects {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.8rem;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.3s ease;
+    }
+    .projects.open {
+      max-height: 200px;
+      opacity: 1;
+      /* room so button hover shadows aren't clipped */
+      padding: 0.35rem 0.5rem 0.6rem;
+    }
+
+    .btn img {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 2px;
+      object-fit: contain;
+    }
+
     /* Skip motion effects for people who prefer reduced motion, and on touch screens */
     @media (prefers-reduced-motion: reduce), (hover: none) {
       .cursor-glow { display: none; }
@@ -120,11 +189,37 @@
   <main class="glass" id="card">
     <h1>Meet Madhup</h1>
     <p>Portfolio coming soon.</p>
+
+    <div class="actions">
+      <button class="btn" id="toggle" type="button" aria-expanded="false" aria-controls="projects">
+        See my projects <span class="chevron" aria-hidden="true">&#9662;</span>
+      </button>
+
+      <div class="projects" id="projects">
+        <a class="btn" href="https://problemset.in" target="_blank" rel="noopener noreferrer">
+          <img src="https://www.google.com/s2/favicons?domain=problemset.in&sz=64" alt="" onerror="this.style.display='none'">
+          ProblemSet
+        </a>
+        <a class="btn" href="https://problemslate.vercel.app" target="_blank" rel="noopener noreferrer">
+          <img src="https://www.google.com/s2/favicons?domain=problemslate.vercel.app&sz=64" alt="" onerror="this.style.display='none'">
+          ProblemSlate
+        </a>
+      </div>
+    </div>
   </main>
 
   <script>
     const glow = document.getElementById('glow');
     const card = document.getElementById('card');
+    const toggle = document.getElementById('toggle');
+    const projects = document.getElementById('projects');
+
+    // Show / hide the project buttons
+    toggle.addEventListener('click', () => {
+      const open = projects.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+    });
+
     const canHover = window.matchMedia('(hover: hover)').matches &&
                      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
