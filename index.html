@@ -33,6 +33,24 @@
     .blob.two { width: 280px; height: 280px; background: #00d4ff; bottom: -60px; right: -40px; }
     .blob.three { width: 220px; height: 220px; background: #ff6ec4; bottom: 20%; left: 12%; }
 
+    /* Glow that follows the cursor */
+    .cursor-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 320px;
+      height: 320px;
+      margin: -160px 0 0 -160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 70%);
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      will-change: transform;
+    }
+    .cursor-glow.active { opacity: 1; }
+
     .glass {
       position: relative;
       z-index: 1;
@@ -46,9 +64,34 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
       -webkit-backdrop-filter: blur(18px);
       backdrop-filter: blur(18px);
+      transform-style: preserve-3d;
+      transition: transform 0.15s ease-out, box-shadow 0.3s ease, background 0.3s ease;
+      overflow: hidden;
     }
 
+    .glass:hover {
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Light sheen that follows the cursor inside the card */
+    .glass::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        280px circle at var(--mx, 50%) var(--my, 50%),
+        rgba(255, 255, 255, 0.28),
+        transparent 60%
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .glass:hover::before { opacity: 1; }
+
     h1 {
+      position: relative;
       font-size: clamp(2rem, 6vw, 3rem);
       font-weight: 700;
       letter-spacing: -0.02em;
@@ -56,8 +99,15 @@
     }
 
     p {
+      position: relative;
       font-size: 1.05rem;
       color: rgba(255, 255, 255, 0.85);
+    }
+
+    /* Skip motion effects for people who prefer reduced motion, and on touch screens */
+    @media (prefers-reduced-motion: reduce), (hover: none) {
+      .cursor-glow { display: none; }
+      .glass { transition: none; }
     }
   </style>
 </head>
@@ -65,10 +115,42 @@
   <div class="blob one"></div>
   <div class="blob two"></div>
   <div class="blob three"></div>
+  <div class="cursor-glow" id="glow"></div>
 
-  <main class="glass">
+  <main class="glass" id="card">
     <h1>Meet Madhup</h1>
     <p>Portfolio coming soon.</p>
   </main>
+
+  <script>
+    const glow = document.getElementById('glow');
+    const card = document.getElementById('card');
+    const canHover = window.matchMedia('(hover: hover)').matches &&
+                     !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (canHover) {
+      // Glow follows the cursor across the page
+      window.addEventListener('mousemove', (e) => {
+        glow.classList.add('active');
+        glow.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+      });
+      document.addEventListener('mouseleave', () => glow.classList.remove('active'));
+
+      // Card tilts slightly toward the cursor and shows a sheen
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const x = e.clientX - r.left;
+        const y = e.clientY - r.top;
+        const rotY = ((x / r.width) - 0.5) * 10;
+        const rotX = ((y / r.height) - 0.5) * -10;
+        card.style.setProperty('--mx', x + 'px');
+        card.style.setProperty('--my', y + 'px');
+        card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-4px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    }
+  </script>
 </body>
 </html>
