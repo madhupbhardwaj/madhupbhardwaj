@@ -166,3 +166,10 @@ body{background:radial-gradient(ellipse 65% 600px at 80% 0,rgba(57,83,143,.14),t
   .header{height:auto;min-height:97px}
   .header nav{gap:6px;font-size:11px}
 }
+
+/* A quiet invitation to read each project's longer story. */
+.story-invitation,.project-story-link{display:inline-flex;align-items:center;gap:8px;color:#b7caff;text-decoration:none;border-bottom:1px solid rgba(164,190,255,.45);padding-bottom:3px;transition:color .2s,border-color .2s}
+.story-invitation{margin-top:9px;font-size:13px}
+.project-story-link{margin-top:16px;font-size:12px}
+.story-invitation:hover,.project-story-link:hover{color:#f1f5ff;border-color:#f1f5ff}
+.story-invitation:focus-visible,.project-story-link:focus-visible{outline:2px solid #a9c3ff;outline-offset:5px}
