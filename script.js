@@ -170,12 +170,20 @@ let proofTimer = null;
 let proofSize = 6;
 let proofStep = 0;
 let previousOverflow = '';
+let proofInputFrame = null;
+let proofDots = [];
+let builtProofSize = 0;
 function stopProof() { clearTimeout(proofTimer); proofTimer = null; }
 function showProofStep(k) {
+  k = Math.max(1, Math.min(proofSize, k));
   proofStep = k;
-  proofGrid.querySelectorAll('.proof-dot').forEach(dot => dot.classList.toggle('lit', Number(dot.dataset.layer) <= k));
+  proofDots.forEach(dot => dot.classList.toggle('lit', Number(dot.dataset.layer) <= k));
   proofEquation.replaceChildren();
   for (let i = 1; i <= k; i++) {
+    if (k > 5 && i > 2 && i < k) {
+      if (i === 3) { const dots = document.createElement('span'); dots.className = 'proof-plus'; dots.textContent = '+ ⋯'; proofEquation.append(dots); }
+      continue;
+    }
     if (i > 1) { const plus = document.createElement('span'); plus.className = 'proof-plus'; plus.textContent = '+'; proofEquation.append(plus); }
     const term = document.createElement('span'); term.textContent = String(2 * i - 1); term.style.color = proofColors[i - 1]; proofEquation.append(term);
   }
@@ -187,18 +195,24 @@ function showProofStep(k) {
 }
 function buildProof(animate = true) {
   stopProof();
-  proofSize = Number(proofSlider.value);
+  if (proofInputFrame !== null) { cancelAnimationFrame(proofInputFrame); proofInputFrame = null; }
+  proofSize = Math.max(1, Math.min(10, Math.round(Number(proofSlider.value) || 1)));
   proofOutput.textContent = `${proofSize} × ${proofSize}`;
   proofSlider.setAttribute('aria-valuetext', `${proofSize} by ${proofSize} square`);
   proofGrid.style.setProperty('--n', proofSize);
-  proofGrid.replaceChildren();
   proofAnnouncement.textContent = '';
+  if (builtProofSize !== proofSize) {
+  const fragment = document.createDocumentFragment();
+  proofDots = [];
   for (let row = 0; row < proofSize; row++) {
     for (let col = 0; col < proofSize; col++) {
       const layer = Math.max(row, col) + 1;
       const dot = document.createElement('span'); dot.className = 'proof-dot'; dot.dataset.layer = layer;
-      dot.setAttribute('aria-hidden','true'); dot.style.setProperty('--dot-color',proofColors[layer - 1]); proofGrid.append(dot);
+      dot.setAttribute('aria-hidden','true'); dot.style.setProperty('--dot-color',proofColors[layer - 1]); fragment.append(dot); proofDots.push(dot);
     }
+  }
+  proofGrid.replaceChildren(fragment);
+  builtProofSize = proofSize;
   }
   if (reduced || !animate) { showProofStep(proofSize); return; }
   showProofStep(1);
@@ -213,20 +227,34 @@ function buildProof(animate = true) {
 if (beautyTrigger && beautyDialog && typeof beautyDialog.showModal === 'function') {
   beautyTrigger.hidden = false;
   beautyTrigger.addEventListener('click', () => {
+    if (beautyDialog.open) return;
     previousOverflow = document.body.style.overflow;
     beautyDialog.showModal(); document.body.style.overflow = 'hidden';
     buildProof();
   });
   beautyDialog.querySelector('.beauty-close').addEventListener('click', () => beautyDialog.close());
   beautyDialog.addEventListener('close', () => {
-    stopProof(); document.body.style.overflow = previousOverflow; beautyTrigger.focus();
+    stopProof();
+    if (proofInputFrame !== null) { cancelAnimationFrame(proofInputFrame); proofInputFrame = null; }
+    document.body.style.overflow = previousOverflow; beautyTrigger.focus({preventScroll:true});
   });
-  beautyDialog.addEventListener('click', event => {
-    if (event.target !== beautyDialog) return;
+  let backdropStart = false;
+  const outsideDialog = event => {
     const rect = beautyDialog.getBoundingClientRect();
-    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) beautyDialog.close();
+    return event.target === beautyDialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom);
+  };
+  beautyDialog.addEventListener('pointerdown', event => { backdropStart = outsideDialog(event); });
+  beautyDialog.addEventListener('click', event => {
+    if (backdropStart && outsideDialog(event)) beautyDialog.close();
+    backdropStart = false;
   });
-  proofSlider.addEventListener('input', () => buildProof(false));
+  proofSlider.addEventListener('input', () => {
+    stopProof();
+    if (proofInputFrame === null) proofInputFrame = requestAnimationFrame(() => { proofInputFrame = null; buildProof(false); });
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && beautyDialog.open) { stopProof(); showProofStep(proofSize); }
+  });
   document.querySelector('.beauty-replay').addEventListener('click', () => buildProof());
   new MutationObserver(() => {
     if (reduced && beautyDialog.open) { stopProof(); showProofStep(proofSize); }

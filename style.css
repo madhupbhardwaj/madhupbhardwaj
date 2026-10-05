@@ -173,3 +173,17 @@ body{background:radial-gradient(ellipse 65% 600px at 80% 0,rgba(57,83,143,.14),t
 .project-story-link{margin-top:16px;font-size:12px}
 .story-invitation:hover,.project-story-link:hover{color:#f1f5ff;border-color:#f1f5ff}
 .story-invitation:focus-visible,.project-story-link:focus-visible{outline:2px solid #a9c3ff;outline-offset:5px}
+
+/* Proof interaction: stable geometry, restrained motion, comfortable touch targets. */
+html{scrollbar-gutter:stable}
+.break-control .beauty-trigger{background:linear-gradient(115deg,rgba(59,81,126,.5),rgba(23,31,47,.9));border-color:rgba(166,193,255,.45);box-shadow:inset 0 1px 0 #ffffff0c;transition:background .2s,border-color .2s,box-shadow .2s}
+.break-control .beauty-trigger:hover{border-color:#abc4ff;background:#273955;box-shadow:0 4px 20px #668dd51a,inset 0 1px 0 #ffffff12}
+.break-control .beauty-trigger:active{background:#1a2940}
+.beauty-dialog{max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);scrollbar-gutter:stable}
+.beauty-equation{min-height:74px;align-content:center;padding-top:12px;font-size:clamp(15px,3.5vw,21px)}
+.beauty-layer{min-height:42px;line-height:1.5;margin-bottom:12px}
+.beauty-range input{height:44px;margin:0;touch-action:pan-y}
+.proof-dot{transition:opacity .3s ease,transform .38s cubic-bezier(.2,.8,.2,1);box-shadow:none!important}
+.beauty-dialog[open]{animation:beauty-open .25s ease-out}
+@media(max-width:480px){.beauty-controls{flex-wrap:wrap}.beauty-range{flex-basis:180px}.beauty-equation{gap:5px}.beauty-stage{padding-inline:18px}}
+@media(prefers-reduced-motion:reduce){.beauty-dialog[open]{animation:none}.proof-dot,.break-control .beauty-trigger{transition:none}}
