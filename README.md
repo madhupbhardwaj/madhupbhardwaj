@@ -7,7 +7,6 @@
 
 I build small tools that make thinking clearer — from focused problem practice to quiet spaces for working things out.
 
-[Website](https://madhupbhardwaj.vercel.app) · [LinkedIn](https://www.linkedin.com/in/madhup-bhardwaj/) · [My Papers](https://mypapers-madhup.vercel.app)
 
 </div>
 
