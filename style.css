@@ -1,4 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Instrument+Serif:ital@0;1&display=swap');
+/* Stylized clothbound spines: editable titles, no cover-image dependencies. */
+.bookshelf{padding:22px 0 62px}
+.shelf-scene{width:min(640px,100%);margin:48px auto 0;padding-top:18px}
+.shelf-books{min-height:292px;display:flex;align-items:flex-end;justify-content:center;gap:8px;padding:0 18px;perspective:900px}
+.shelf-book{--book-height:270px;--book-width:82px;--cloth:#284940;--gold:#e3cf9e;position:relative;display:block;flex:0 0 var(--book-width);width:var(--book-width);height:var(--book-height);padding:0;border:1px solid #ffffff18;border-radius:4px 6px 2px 2px;background-color:var(--cloth);background-image:linear-gradient(90deg,#0008,transparent 12%,#ffffff13 22%,transparent 48%,#0005 94%,#ffffff18),repeating-linear-gradient(0deg,#ffffff06 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,#00000009 0 1px,transparent 1px 3px);color:var(--gold);box-shadow:inset 3px 0 3px #0006,inset -2px 0 2px #0005,4px 0 5px #0007;cursor:pointer;transform-origin:50% 100%;transition:transform .35s ease,box-shadow .35s ease;isolation:isolate}
+.shelf-book::before{content:'';position:absolute;inset:7px 5px;border-inline:1px solid #e7d3a515;border-radius:2px;pointer-events:none}
+.book-almanack{--book-height:252px;--book-width:92px;--cloth:#57313b;--gold:#ead6b0}
+.book-proofs{--book-height:285px;--book-width:70px;--cloth:#283e5b;--gold:#e0c991}
+.book-rules{position:absolute;inset:13px 8px;border-block:4px double currentColor;opacity:.65;pointer-events:none}
+.book-name{position:absolute;top:45%;left:50%;width:calc(var(--book-height) - 100px);transform:translate(-50%,-50%) rotate(-90deg);font-family:Georgia,serif;font-size:21px;line-height:1.15;font-weight:400;text-align:center;letter-spacing:0;text-shadow:0 1px 1px #0008}
+.book-almanack .book-name{font-size:17px}.book-proofs .book-name{font-size:26px}
+.book-author{position:absolute;bottom:29px;left:5px;right:5px;font-family:Arial,sans-serif;font-size:8px;line-height:1.5;letter-spacing:.7px;text-align:center}
+.shelf-book[aria-pressed="true"]{transform:translateY(-9px);box-shadow:inset 3px 0 3px #0006,inset -2px 0 2px #0005,7px 8px 12px #0008}
+@media(hover:hover) and (pointer:fine){.shelf-book:hover{transform:translateY(-17px) rotate(-2deg);box-shadow:inset 3px 0 3px #0006,8px 12px 20px #0008}}
+.shelf-book:focus-visible{outline:2px solid #b8cfff;outline-offset:5px;z-index:2}
+.shelf-plank{height:17px;position:relative;border-top:2px solid #a77a4d;border-bottom:3px solid #2a1b14;border-radius:2px;background:repeating-linear-gradient(1deg,#ffffff04 0 1px,transparent 1px 4px),linear-gradient(#694a32,#453022);box-shadow:0 16px 28px #0007,0 4px 6px #0006}
+.book-details{max-width:520px;min-height:104px;margin:31px auto 0;text-align:center;padding-inline:10px;overflow-wrap:anywhere}
+.book-details h3{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:28px;line-height:1.2;letter-spacing:0;margin:0 0 9px;color:#eee9df}
+.book-details p,.shelf-noscript{font-size:12px;line-height:1.6;color:#a6aebb;margin:0}
+html[data-reduced-motion="true"] .shelf-book{transform:none!important}
+html[data-reduced-motion="true"] .shelf-book[aria-pressed="true"]{outline:1px solid #e3cf9e;outline-offset:2px}
+@media(max-width:600px){.bookshelf{padding:8px 0 36px}.shelf-scene{margin-top:26px}.shelf-books{padding-inline:9px;gap:7px;min-height:265px}.shelf-book{--book-height:246px;--book-width:68px}.book-almanack{--book-height:233px;--book-width:78px}.book-proofs{--book-height:258px;--book-width:60px}.book-name{font-size:18px}.book-almanack .book-name{font-size:15px}.book-proofs .book-name{font-size:24px}.book-author{font-size:7px}.book-details{min-height:116px;margin-top:27px}.book-details h3{font-size:26px}}
 .project-copy,.project-summary{min-width:0;overflow-wrap:anywhere}
 .project-info .project-origin{max-width:345px;margin:18px 0 0;padding-left:14px;border-left:2px solid rgba(134,167,255,.35);font-size:14px;line-height:1.75;color:#c6cfdf;overflow-wrap:anywhere}
 .project-origin>span{display:block;margin-bottom:5px;font-size:10px;line-height:1.5;color:#96afe3;text-transform:uppercase;letter-spacing:1px}

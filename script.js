@@ -1,3 +1,12 @@
+// Book spines are ordinary buttons, so keyboard and touch share the same action.
+document.querySelectorAll('.shelf-book').forEach(book => {
+  book.addEventListener('click', () => {
+    document.querySelectorAll('.shelf-book').forEach(item => item.setAttribute('aria-pressed', String(item === book)));
+    const details = document.getElementById('book-details');
+    details.querySelector('h3').textContent = book.dataset.title;
+    details.querySelector('p').textContent = book.dataset.author;
+  });
+});
 const root = document.documentElement;
 const media = matchMedia('(prefers-reduced-motion: reduce)');
 const button = document.querySelector('.motion-toggle');
