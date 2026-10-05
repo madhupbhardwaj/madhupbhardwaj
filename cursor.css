@@ -1,0 +1,11 @@
+/* Progressive enhancement: the native cursor stays until a mouse actually moves. */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none!important;z-index:2147483647;opacity:0;will-change:transform;contain:layout style}
+.cursor-dot{width:4px;height:4px;margin:-2px;border-radius:50%;background:#fff;mix-blend-mode:difference}
+.cursor-ring{width:28px;height:28px;margin:-14px}
+.cursor-ring span{display:block;width:100%;height:100%;border:1px solid rgba(210,223,255,.7);border-radius:50%;box-sizing:border-box;transition:transform .2s ease,border-color .2s ease,background .2s ease;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) and (forced-colors:none){
+  html.custom-cursor,html.custom-cursor *{cursor:none!important}
+  html.custom-cursor .cursor-dot,html.custom-cursor .cursor-ring{opacity:1}
+  html.custom-cursor .cursor-ring.is-link span{transform:scale(1.45);border-color:#b5cbff;background:rgba(141,177,255,.08)}
+  html.custom-cursor .cursor-ring.is-down span{transform:scale(.78)}
+}
