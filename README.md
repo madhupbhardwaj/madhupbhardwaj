@@ -1,41 +1,44 @@
-# Madhup: 3D trial
+[madhup-profile-README.md](https://github.com/user-attachments/files/33081281/madhup-profile-README.md)
+<div align="center">
 
-This is the full portfolio with an interactive Mobius strip between the introduction and the quote, a scroll-drawn sine curve beside the projects, and project previews that straighten as they enter view. It is a separate trial of the design.
+# Madhup Bhardwaj
 
-## Try it first
+### Student · Builder · Curious about mathematics
 
-Extract the ZIP and open `index.html` in Chrome, Safari, or Edge. Keep the files and the `assets` folder together. No installation or build command is needed.
+I build small tools that make thinking clearer — from focused problem practice to quiet spaces for working things out.
 
-The strip rotates slowly. Drag to rotate it yourself; on a phone, drag sideways. Vertical swipes still scroll the page. Surface and Wireframe change its appearance. Trace the edge follows its single continuous boundary, then stops. The icon buttons pause animation and reset the view. Keyboard users can focus the model and use the arrow keys or Home.
+[Website](https://madhupbhardwaj.vercel.app) · [LinkedIn](https://www.linkedin.com/in/madhup-bhardwaj/) · [My Papers](https://mypapers-madhup.vercel.app)
 
-The existing reduced-motion button also stops the sculpture. Manual rotation remains available. Devices without WebGL display a still image instead.
+</div>
 
-## Put this trial on GitHub / Vercel
+<br>
 
-Upload the extracted files into the same repository folder as your current `index.html`. Do not upload the ZIP itself or nest this folder inside the site.
+## What I’m building
 
-Changed files:
+| Project | What it is |
+| --- | --- |
+| [ProblemSet](https://problemset.in) | Curated mathematics practice, organised by topic. |
+| [ProblemSlate](https://problemslate.vercel.app) | A focused whiteboard for macOS and Windows. |
+| [My Papers](https://mypapers-madhup.vercel.app) | A home for my mathematical writing and notes. |
 
-- `index.html`
-- `style.css`
-- `script.js`
+## A little about me
 
-New required files:
+I’m a high school student in India preparing for JEE and learning by making things. I’m especially interested in mathematics, problem solving, thoughtful interfaces, and the small details that make software feel good to use.
 
-- `assets/mobius.js` (includes Three.js; no external 3D script needed)
-- `assets/mobius-still.png`
-- `assets/THREE-LICENSE.txt`
+Right now, I’m studying, improving the tools I’ve already built, and following ideas that are too interesting to leave alone.
 
-The project images are included for a complete local preview and are unchanged. Existing hosting settings can stay as they are. This version updates `script.js` too: upload all three main files and keep the `assets` folder together.
+## Things I enjoy
 
-The wave follows normal page scrolling and retracts when you scroll upward. Reduced motion displays the complete curve and keeps project previews straight.
+`Mathematics` · `Problem solving` · `JavaScript` · `HTML & CSS` · `Desktop apps` · `Writing`
 
-## Edit the quote
+## How I like to build
 
-Search for `QUOTE CARD` in `index.html`. Edit the paragraph, or change `data-enabled="true"` to `data-enabled="false"` to hide the card.
+> Start with a real annoyance. Make one clear thing. Keep improving it.
 
-## Verification
+Most of my projects begin as something I wish existed for the way I learn. They are experiments first, and products second.
 
-The scroll additions were also checked at 1440px, 390px, and 320px: the curve advances with scroll, each preview straightens, reduced motion produces a static view, and the gutter remains inside the viewport without horizontal overflow.
+<div align="center">
 
-Tested in Chromium with desktop (1440px) and phone (390px and 320px) viewports: visible model pixels and framing, mouse and touch rotation, keyboard controls, pause, reset, wireframe mode, the complete edge trace, reduced motion, vertical touch scrolling, and the no-WebGL fallback. The existing break-the-heading and maths-proof features also passed interaction checks. Physical iOS/Android hardware and Safari have not been tested.
+### One idea at a time.
+
+</div>
