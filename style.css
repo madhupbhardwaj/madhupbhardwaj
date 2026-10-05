@@ -1,4 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Instrument+Serif:ital@0;1&display=swap');
+.project-copy{min-width:0}
+.project-info .project-origin{max-width:345px;margin:18px 0 0;padding-left:14px;border-left:2px solid rgba(134,167,255,.35);font-size:14px;line-height:1.75;color:#c6cfdf;overflow-wrap:anywhere}
+.project-origin>span{display:block;margin-bottom:5px;font-size:10px;line-height:1.5;color:#96afe3;text-transform:uppercase;letter-spacing:1px}
+@media(max-width:600px){.project-info .project-origin{max-width:none;margin-top:16px}}
 /* Scroll progress follows a sine curve in the outer project gutter. */
 .work.scroll-effects{position:relative}
 .scroll-wave{position:absolute;top:0;left:-43px;width:28px;height:100%;overflow:visible;pointer-events:none}
