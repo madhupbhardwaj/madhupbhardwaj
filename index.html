@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-site-version="bookshelf-20261005">
+<html lang="en" data-site-version="nav-20261005">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101112">
@@ -8,7 +8,7 @@
   <meta property="og:title" content="Madhup — Student & Builder"><meta property="og:description" content="Thoughtful tools. Difficult problems. A little curiosity."><meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232e64ff'/%3E%3Cpath d='M15 46V18l17 17 17-17v28' fill='none' stroke='white' stroke-width='6'/%3E%3C/svg%3E">
   <script>try{const p=localStorage.getItem("portfolio-reduced-motion");document.documentElement.dataset.reducedMotion=String(p===null?matchMedia("(prefers-reduced-motion: reduce)").matches:p==="true")}catch{document.documentElement.dataset.reducedMotion=String(matchMedia("(prefers-reduced-motion: reduce)").matches)}</script>
-  <link rel="stylesheet" href="style.css?v=bookshelf-20261005"><script src="script.js?v=bookshelf-20261005" defer></script>
+  <link rel="stylesheet" href="style.css?v=nav-20261005"><script src="script.js?v=bookshelf-20261005" defer></script>
   <script src="assets/mobius.js?v=mobius-trial-1" defer></script>
   <script>
   window.va = window.va || function () {
@@ -34,7 +34,7 @@
 <div class="progress" aria-hidden="true"></div>
 <header class="header wrap">
   <a class="wordmark" href="#" aria-label="Madhup home">madhup<span>✳</span></a>
-  <nav aria-label="Main navigation"><a href="#work">Selected work <span>03</span></a><a href="#about">About me</a></nav>
+  <nav aria-label="Main navigation"><a href="#mobius">3D</a><a href="#quote">Quote</a><a href="#work">Work</a><a href="#bookshelf">Books</a><a href="#about">About</a></nav>
   <div class="header-tools"><span class="header-note">Student. Builder. Curious human.</span><button class="motion-toggle" type="button" aria-label="Reduce motion" aria-pressed="false" title="Reduce motion"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path class="motion-waves" d="M3 7h7M3 12h5M3 17h7"/><path d="M14 6v12M20 6v12"/></svg></button></div>
 </header>
 <main id="main">
@@ -45,7 +45,7 @@
   <div class="break-control"><button class="break-button" type="button" aria-pressed="false" hidden>Let me break your website <span aria-hidden="true">✳</span></button><button class="beauty-trigger break-button" type="button" aria-haspopup="dialog" hidden>Convince me maths is beautiful <span aria-hidden="true">✧</span></button><span class="break-status" role="status" aria-live="polite"></span></div>
   <div class="hero-foot"><span>BASED IN INDIA</span><span>SCROLL TO DISCOVER</span><span>IDEAS → EXPERIMENTS → PROJECTS</span></div>
 </section>
-<section class="mobius wrap" aria-labelledby="mobius-title" data-state="loading">
+<section id="mobius" class="mobius wrap" aria-labelledby="mobius-title" data-state="loading">
   <div class="mobius-heading">
     <div><p class="mobius-eyebrow">A SMALL MATHEMATICAL DETOUR</p><h2 id="mobius-title">An unexpected <em>side.</em></h2></div>
     <p class="mobius-description">One surface. One continuous edge.<br>A half-twist changes everything.</p>
@@ -70,7 +70,7 @@
   <p class="mobius-caption" role="status" aria-live="polite">A loop with a twist. Literally.</p>
 </section>
 <!-- QUOTE CARD: set data-enabled="false" to hide; edit the paragraph to change your quote. -->
-<section class="quote-card wrap reveal" data-enabled="true" aria-label="A personal thought">
+<section id="quote" class="quote-card wrap reveal" data-enabled="true" aria-label="A personal thought">
   <span class="quote-symbol" aria-hidden="true">&ldquo;</span>
   <blockquote><p>There is always another way to see the same problem.</p></blockquote>
   <span class="quote-symbol quote-symbol-end" aria-hidden="true">&rdquo;</span>

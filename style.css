@@ -152,3 +152,17 @@ body{background:radial-gradient(ellipse 65% 600px at 80% 0,rgba(57,83,143,.14),t
 .beauty-insight{margin-top:22px;border-top:1px solid #303c51;padding-top:18px}.beauty-insight>span{color:#93a7c7;font-size:10px;letter-spacing:1.5px}.beauty-insight p{font-size:clamp(16px,3.5vw,21px);margin:7px 0;color:#dbe6ff}.beauty-insight small{display:block;color:#a8b7cf;font-size:13px;line-height:1.65}
 @keyframes beauty-open{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
 @media(max-width:480px){.beauty-shell{padding:18px 20px 24px}.beauty-dialog{border-radius:20px}.beauty-stage{padding:18px 24px 30px}.beauty-grid{width:min(100%,220px)}.beauty-controls{gap:12px}.beauty-replay{font-size:12px;padding-inline:12px}.beauty-eyebrow{font-size:9px;letter-spacing:1px}.beauty-equation{gap:5px}.break-status{flex-basis:100%}}
+
+/* Compact jump links follow the page order; on smaller screens they get their own row. */
+.header nav{gap:clamp(12px,2vw,28px)}
+.header nav a{white-space:nowrap}
+@media(max-width:900px){
+  .header{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto;height:auto;min-height:100px;row-gap:8px;padding-block:13px}
+  .header .wordmark{grid-column:1;grid-row:1}
+  .header-tools{grid-column:2;grid-row:1}
+  .header nav{grid-column:1/-1;grid-row:2;justify-content:space-between;gap:8px;width:100%;padding-top:10px;border-top:1px solid rgba(190,208,255,.13);font-size:12px}
+}
+@media(max-width:600px){
+  .header{height:auto;min-height:97px}
+  .header nav{gap:6px;font-size:11px}
+}
