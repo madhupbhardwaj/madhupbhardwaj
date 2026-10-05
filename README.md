@@ -1,4 +1,4 @@
-[madhup-profile-README.md](https://github.com/user-attachments/files/33081281/madhup-profile-README.md)
+
 <div align="center">
 
 # Madhup Bhardwaj
