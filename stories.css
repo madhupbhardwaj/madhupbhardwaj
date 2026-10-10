@@ -88,3 +88,15 @@
 html[data-reduced-motion="true"] .thread-glint{animation:none;opacity:0}
 html[data-reduced-motion="true"] .story-inner{animation:none}
 @media(prefers-reduced-motion:reduce){.thread-glint{animation:none;opacity:0}.story-inner{animation:none}}
+
+/* One open story, with a measured height transition on desktop and touch screens. */
+.stories-list{overflow-anchor:none}
+.story-drawer.is-animating{overflow:hidden;will-change:height}
+.story-drawer[data-expanded] .story-inner{animation:none}
+.story-drawer[data-expanded="false"] .story-plus{transform:rotate(0);background:transparent;border-color:#4b5870}
+.story-drawer[data-expanded="false"] .story-heading{color:#eff2fa}
+.story-drawer[data-expanded="true"] .story-plus{transform:rotate(45deg);background:#24334b;border-color:#738ebc}
+.story-heading{transition:color .25s ease}
+.story-drawer summary{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+@media(prefers-reduced-motion:reduce){.story-plus,.story-heading,.story-drawer summary{transition:none}}
+html[data-reduced-motion="true"] .story-plus,html[data-reduced-motion="true"] .story-heading,html[data-reduced-motion="true"] .story-drawer summary{transition:none}
