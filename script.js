@@ -139,6 +139,8 @@ function restoreHeadline(instant = false) {
 if (breakButton && headlineSource && pieces) {
   breakButton.hidden = false;
   breakButton.addEventListener('click', () => {
+    // The control lives in the Lab; show the hero where the effect happens.
+    headline.scrollIntoView({ behavior: reduced ? 'instant' : 'smooth', block: 'center' });
     if (broken) { restoreHeadline(); return; }
     clearTimeout(restoreTimer);
     buildPieces();
@@ -150,6 +152,8 @@ if (breakButton && headlineSource && pieces) {
     breakButton.setAttribute('aria-pressed', 'true');
     breakButton.innerHTML = 'Put it back <span aria-hidden="true">↺</span>';
     breakStatus.textContent = 'Well, you did ask.';
+    // The control is further down the page, so restore the heading on its own.
+    restoreTimer = setTimeout(() => restoreHeadline(), 6000);
   });
   window.addEventListener('resize', () => {
     if (broken || headline.classList.contains('headline-active')) restoreHeadline(true);
