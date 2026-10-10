@@ -172,6 +172,27 @@ body{background:radial-gradient(ellipse 65% 600px at 80% 0,rgba(57,83,143,.14),t
 .story-invitation{margin-top:9px;font-size:13px}
 .project-story-link{margin-top:16px;font-size:12px}
 .story-invitation:hover,.project-story-link:hover{color:#f1f5ff;border-color:#f1f5ff}
+
+/* An editorial index of the three themes running through the work. */
+.hero-actions{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.hero-story-link{color:#c1d2ff;border-bottom:1px solid #7086b8;padding:7px 0;font-size:14px;white-space:nowrap;transition:color .2s,border-color .2s}
+.hero-story-link:hover{color:#fff;border-color:#fff}
+.hero-story-link span{margin-left:7px}
+.focus-strip{padding:22px 0 28px;border-top:1px solid rgba(180,202,255,.18);border-bottom:1px solid rgba(180,202,255,.18)}
+.focus-strip-label,.focus-index{font-size:10px;letter-spacing:1.65px;color:#aabbdc;font-weight:600}
+.focus-strip-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:17px}
+.focus-strip-grid a{position:relative;display:flex;flex-direction:column;gap:5px;min-width:0;padding:18px 52px 18px 22px;border-left:1px solid rgba(180,202,255,.18);transition:background .25s}
+.focus-strip-grid a:first-child{border-left:0;padding-left:0}
+.focus-strip-grid a:hover{background:rgba(112,146,238,.085)}
+.focus-strip-grid strong{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(25px,3.1vw,39px);font-weight:400;line-height:1.12;letter-spacing:-.02em}
+.focus-arrow{position:absolute;right:20px;bottom:17px;font-size:19px;color:#a9c4ff;transition:transform .25s}
+.focus-strip-grid a:hover .focus-arrow{transform:translate(3px,-3px)}
+.focus-strip-grid a:nth-child(2):hover .focus-arrow{transform:translateY(3px)}
+.focus-strip-grid a:focus-visible,.hero-story-link:focus-visible{outline:2px solid #abc4ff;outline-offset:4px}
+@media(max-width:1000px){.hero-actions{gap:16px}.hero-bottom{gap:25px}}
+@media(max-width:700px){.hero-actions{margin-top:22px;gap:22px}.hero-actions .round-link{margin-top:0}.focus-strip{padding:20px 0}.focus-strip-grid{grid-template-columns:1fr;margin-top:9px}.focus-strip-grid a,.focus-strip-grid a:first-child{padding:13px 36px 13px 0;border-left:0;border-top:1px solid rgba(180,202,255,.13)}.focus-strip-grid strong{font-size:27px}.focus-arrow{right:4px;bottom:17px}}
+@media(prefers-reduced-motion:reduce){.focus-strip-grid a,.focus-arrow,.hero-story-link{transition:none}}
+html[data-reduced-motion="true"] .focus-strip-grid a,html[data-reduced-motion="true"] .focus-arrow,html[data-reduced-motion="true"] .hero-story-link{transition:none}
 .story-invitation:focus-visible,.project-story-link:focus-visible{outline:2px solid #a9c3ff;outline-offset:5px}
 
 /* Proof interaction: stable geometry, restrained motion, comfortable touch targets. */
