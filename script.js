@@ -328,7 +328,7 @@ if (beautyTrigger && beautyDialog && typeof beautyDialog.showModal === 'function
   if (!hero || !title) return;
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
   let x = 0, y = 0, targetX = 0, targetY = 0, raf = null, last = 0;
-  const enabled = () => finePointer.matches && root.dataset.reducedMotion !== 'true' && !title.classList.contains('headline-active') && !document.hidden;
+  const enabled = () => root.dataset.reducedMotion !== 'true' && !title.classList.contains('headline-active') && !document.hidden;
   function paint() {
     title.style.setProperty('--headline-x', `${x.toFixed(3)}px`);
     title.style.setProperty('--headline-y', `${y.toFixed(3)}px`);
@@ -352,18 +352,32 @@ if (beautyTrigger && beautyDialog && typeof beautyDialog.showModal === 'function
       raf = null; last = 0; x = y = 0; paint();
     } else schedule();
   }
-  hero.addEventListener('pointermove', event => {
-    if (event.pointerType !== 'mouse' || !enabled()) return;
+  function followPointer(event) {
+    if (!enabled() || (event.pointerType !== 'touch' && !finePointer.matches)) return;
     const box = hero.getBoundingClientRect();
     const clamp = n => Math.max(-1, Math.min(1, n));
-    targetX = clamp((event.clientX - box.left) / box.width * 2 - 1) * 9;
-    targetY = clamp((event.clientY - box.top) / box.height * 2 - 1) * 6;
+    const touch = event.pointerType === 'touch';
+    targetX = clamp((event.clientX - box.left) / box.width * 2 - 1) * (touch ? 5 : 9);
+    targetY = clamp((event.clientY - box.top) / box.height * 2 - 1) * (touch ? 3 : 6);
     schedule();
-  }, {passive:true});
-  hero.addEventListener('pointerleave', () => reset());
+  }
+  function followScroll() {
+    if (finePointer.matches) { reset(); return; }
+    if (!enabled()) { reset(true); return; }
+    const box = hero.getBoundingClientRect();
+    if (box.bottom <= 0 || box.top >= innerHeight) { reset(true); return; }
+    targetX = 0;
+    targetY = Math.max(-7, Math.min(7, (hero.offsetTop - box.top) * .014));
+    schedule();
+  }
+  hero.addEventListener('pointermove', followPointer, {passive:true});
+  hero.addEventListener('pointerdown', event => { if (event.pointerType === 'touch') followPointer(event); }, {passive:true});
+  hero.addEventListener('pointerup', event => { if (event.pointerType === 'touch') followScroll(); }, {passive:true});
+  hero.addEventListener('pointercancel', followScroll, {passive:true});
+  hero.addEventListener('pointerleave', () => { if (finePointer.matches) reset(); });
   window.addEventListener('blur', () => reset(true));
   window.addEventListener('resize', () => reset(true));
-  window.addEventListener('scroll', () => reset(), {passive:true});
+  window.addEventListener('scroll', followScroll, {passive:true});
   document.addEventListener('visibilitychange', () => reset(true));
   finePointer.addEventListener('change', () => reset(true));
   new MutationObserver(() => { if (!enabled()) reset(true); }).observe(root, {attributes:true, attributeFilter:['data-reduced-motion']});

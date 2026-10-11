@@ -226,7 +226,7 @@ html{scrollbar-gutter:stable}
 .closing p{margin-top:8px;font-size:clamp(29px,3.5vw,44px)}
 .closing-links{display:flex;flex-wrap:wrap;align-items:center;gap:25px}
 .closing-links a{white-space:nowrap}
-@media(max-width:760px){
+@media(max-width:900px){
  .work{display:block;padding-top:54px}
  .work>.project{margin-bottom:42px}
  .work>.project:first-of-type .project-visual{height:350px}
@@ -247,4 +247,29 @@ html{scrollbar-gutter:stable}
 /* Independent translation preserves the entrance and letter-scatter animations. */
 .hero #hero-title{translate:var(--headline-x,0px) var(--headline-y,0px)}
 html[data-reduced-motion="true"] .hero #hero-title,.hero #hero-title.headline-active{translate:none}
-@media(hover:none),(pointer:coarse){.hero #hero-title{translate:none}}
+
+
+/* Mobile typography and comfortable touch targets. */
+@media(max-width:600px){
+ .header nav{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;padding-top:4px}
+ .header nav a{display:flex;justify-content:center;align-items:center;min-height:44px;font-size:11px}
+ .motion-toggle{width:44px;height:44px}
+ .about h2{font-size:clamp(36px,11vw,52px);letter-spacing:-1.7px}
+ .project-story-link,.story-invitation,.back-top,.round-link,.stories-page .story-flow a{min-height:44px;display:inline-flex;align-items:center}
+ .footer{align-items:flex-start}
+}
+@media(max-width:380px){.hero h1{font-size:clamp(34px,10.6vw,40px);letter-spacing:-1.8px}}
+@media(hover:none) and (pointer:coarse){
+ .scroll-effects .project-visual:active .project-art{translate:0 -5px;scale:1.015}
+ .visit-pill{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+ .shelf-book:active{transform:translateY(-13px)}
+}
+html[data-reduced-motion="true"] .scroll-effects .project-visual:active .project-art{translate:none;scale:none}
+@media(hover:none) and (pointer:coarse){
+ .header nav a{min-height:44px;display:flex;align-items:center}
+ .motion-toggle{width:44px;height:44px}
+ .back-top{min-height:44px;display:inline-flex;align-items:center}
+}
+
+@media(min-width:601px){.work .visual-caption{max-width:calc(100% - 210px);line-height:1.5}}
+@media(max-width:600px){.work .visual-caption{max-width:min(145px,calc(100% - 160px));line-height:1.5}}
