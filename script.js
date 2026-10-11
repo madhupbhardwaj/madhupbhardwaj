@@ -383,3 +383,146 @@ if (beautyTrigger && beautyDialog && typeof beautyDialog.showModal === 'function
   new MutationObserver(() => { if (!enabled()) reset(true); }).observe(root, {attributes:true, attributeFilter:['data-reduced-motion']});
   new MutationObserver(() => { if (!enabled()) reset(true); }).observe(title, {attributes:true, attributeFilter:['class']});
 })();
+
+// An original city, projected from above. No image downloads or 3D dependencies.
+(() => {
+  const hero = document.querySelector('.hero');
+  const canvas = hero?.querySelector('.aerial-city');
+  const skip = hero?.querySelector('.aerial-skip');
+  const context = canvas?.getContext('2d');
+  if (!hero || !context || !skip) return;
+  const visitKey = 'portfolio-aerial-intro-v1';
+  let visited = false;
+  try { visited = sessionStorage.getItem(visitKey) === 'seen'; } catch {}
+  const still = () => root.dataset.reducedMotion === 'true';
+  let width = 0, height = 0, frame = null, resizeFrame = null;
+  let started = 0, lastPaint = 0, playing = false, progress = 1;
+  let buildings = [], streets = [];
+  let seed = 8237;
+  const random = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+  function createCity() {
+    seed = 8237; buildings = []; streets = [];
+    const count = width < 600 ? 7 : 9;
+    const extent = count * 9 + 6;
+    for (let n = -count; n <= count; n++) {
+      const p = n * 9;
+      streets.push([[-extent,0,p-.48],[extent,0,p-.48],[extent,0,p+.48],[-extent,0,p+.48]]);
+      streets.push([[p-.48,0,-extent],[p+.48,0,-extent],[p+.48,0,extent],[p-.48,0,extent]]);
+    }
+    for (let row = -count; row < count; row++) {
+      for (let col = -count; col < count; col++) {
+        const x = col * 9 + 1.5, z = row * 9 + 1.5;
+        const bw = 3.7 + random() * 2.2, bd = 3.7 + random() * 2.2;
+        const bh = .8 + random() * 4.3;
+        const shade = random();
+        // A little square around the person is kept open as the camera descends.
+        if ((Math.abs(x + bw / 2) < 9 && Math.abs(z + bd / 2) < 9) || shade < .09) continue;
+        buildings.push({x,z,w:bw,d:bd,h:bh,shade});
+      }
+    }
+    buildings.sort((a,b) => a.z - b.z);
+  }
+  function draw(p) {
+    if (!width || !height) return;
+    progress = p;
+    const eased = p * p * (3 - 2 * p);
+    const altitude = width < 600 ? 130 : 210;
+    const distance = altitude * Math.pow(32 / altitude, eased);
+    const elevation = 1.51 - .29 * eased;
+    const sin = Math.sin(elevation), cos = Math.cos(elevation);
+    const focal = Math.min(width, height) * .95;
+    const centerX = width * (width < 600 ? .8 : .64), centerY = height * .74;
+    const project = ([x,y,z]) => {
+      const depth = distance - y * sin - z * cos;
+      if (depth < 4) return null;
+      return [centerX + x * focal / depth, centerY - (y * cos - z * sin) * focal / depth];
+    };
+    const polygon = (vertices, fill, stroke) => {
+      const points = vertices.map(project);
+      if (points.some(point => !point)) return;
+      if (points.every(([x])=>x < -40) || points.every(([x])=>x > width + 40) || points.every(([,y])=>y < -40) || points.every(([,y])=>y > height + 40)) return;
+      context.beginPath(); context.moveTo(...points[0]);
+      for (let i=1;i<points.length;i++) context.lineTo(...points[i]);
+      context.closePath(); context.fillStyle = fill; context.fill();
+      if (stroke) { context.strokeStyle = stroke; context.lineWidth = .65; context.stroke(); }
+    };
+    context.clearRect(0,0,width,height);
+    const glow = context.createRadialGradient(centerX,centerY,0,centerX,centerY,Math.max(width,height)*.53);
+    glow.addColorStop(0,'rgba(53,96,172,.16)'); glow.addColorStop(1,'rgba(20,35,60,0)');
+    context.fillStyle = glow; context.fillRect(0,0,width,height);
+    for (const street of streets) polygon(street,'rgba(156,185,221,.075)','rgba(179,205,237,.055)');
+    for (const b of buildings) {
+      const {x,z,w,d,h,shade} = b;
+      const a=[x,0,z], bb=[x+w,0,z], c=[x+w,0,z+d], dd=[x,0,z+d];
+      const A=[x,h,z], B=[x+w,h,z], C=[x+w,h,z+d], D=[x,h,z+d];
+      polygon([bb,c,C,B],'#101c2c','rgba(161,190,229,.09)');
+      polygon([dd,c,C,D],'#152338','rgba(161,190,229,.09)');
+      polygon([A,B,C,D],shade > .6 ? '#293e59' : '#1c2e45','rgba(194,215,241,.19)');
+      // Small rooftop outlines become visible naturally as the camera gets closer.
+      if (p > .18 && w > 4.5) polygon([[x+.8,h+.04,z+.8],[x+w-.8,h+.04,z+.8],[x+w-.8,h+.04,z+d-.8],[x+.8,h+.04,z+d-.8]],'#1b2b40','rgba(177,200,231,.1)');
+    }
+    const origin = project([0,0,0]);
+    const scale = focal / distance;
+    const radius = Math.max(3,scale * .8);
+    const beacon = context.createRadialGradient(...origin,0,...origin,radius*5);
+    beacon.addColorStop(0,'rgba(113,162,255,.4)'); beacon.addColorStop(1,'rgba(91,143,255,0)');
+    context.fillStyle = beacon; context.beginPath(); context.arc(...origin,radius*5,0,Math.PI*2); context.fill();
+    context.strokeStyle = 'rgba(139,178,255,.55)'; context.lineWidth = 1;
+    context.beginPath(); context.ellipse(origin[0],origin[1],radius*1.6,radius*1.6*sin,0,0,Math.PI*2); context.stroke();
+    const body = project([0,.55,0]), head = project([0,1.3,0]);
+    context.fillStyle = '#bfd5ff'; context.beginPath(); context.arc(head[0],head[1],Math.max(1.4,scale*.15),0,Math.PI*2); context.fill();
+    context.strokeStyle = '#95b9ff'; context.lineWidth = Math.max(1.3,scale*.2); context.lineCap = 'round';
+    context.beginPath();context.moveTo(head[0],head[1]+scale*.18);context.lineTo(body[0],body[1]);context.stroke();
+    for (const dx of [-.2,.2]) {
+      const foot = project([dx,.04,.1]);
+      context.beginPath();context.moveTo(...body);context.lineTo(...foot);context.stroke();
+    }
+  }
+  function finish() {
+    playing = false;
+    if (frame !== null) cancelAnimationFrame(frame);
+    frame = null; hero.dataset.aerialState = 'settled'; skip.hidden = true;
+    draw(1);
+  }
+  function tick(time) {
+    frame = null;
+    if (!playing) return;
+    if (still() || document.hidden) { finish(); return; }
+    if (!started) started = time;
+    const duration = width < 600 ? 2700 : 3300;
+    const p = Math.min(1,(time-started)/duration);
+    if (width >= 600 || time-lastPaint >= 32 || p === 1) { draw(p); lastPaint = time; }
+    if (p === 1) finish(); else frame = requestAnimationFrame(tick);
+  }
+  function resize() {
+    width = hero.clientWidth; height = hero.clientHeight;
+    const ratio = Math.min(devicePixelRatio || 1, width < 600 ? 1.5 : 2);
+    canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
+    context.setTransform(ratio,0,0,ratio,0,0);
+    createCity(); draw(progress);
+  }
+  // Returning from a project or following a section link goes straight to the hero.
+  const shouldPlay = !visited && !still() && !location.hash && !document.hidden;
+  progress = shouldPlay ? 0 : 1;
+  resize();
+  if (shouldPlay) {
+    try { sessionStorage.setItem(visitKey,'seen'); } catch {}
+    playing = true; hero.dataset.aerialState = 'playing'; skip.hidden = false;
+    frame = requestAnimationFrame(tick);
+  } else finish();
+  skip.addEventListener('click', () => {
+    // Leave keyboard focus at the content instead of on a newly hidden button.
+    if (document.activeElement === skip) {
+      const title = document.getElementById('hero-title');
+      title.setAttribute('tabindex','-1'); title.focus({preventScroll:true});
+      title.addEventListener('blur',()=>title.removeAttribute('tabindex'),{once:true});
+    }
+    finish();
+  });
+  window.addEventListener('scroll',()=>{if(playing && scrollY > 80) finish();},{passive:true});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden && playing) finish();});
+  new MutationObserver(()=>{if(still()) finish();}).observe(root,{attributes:true,attributeFilter:['data-reduced-motion']});
+  if ('ResizeObserver' in window) new ResizeObserver(()=>{
+    if (resizeFrame === null) resizeFrame = requestAnimationFrame(()=>{resizeFrame=null;resize();});
+  }).observe(hero);
+})();

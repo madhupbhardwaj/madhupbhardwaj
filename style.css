@@ -273,3 +273,14 @@ html[data-reduced-motion="true"] .scroll-effects .project-visual:active .project
 
 @media(min-width:601px){.work .visual-caption{max-width:calc(100% - 210px);line-height:1.5}}
 @media(max-width:600px){.work .visual-caption{max-width:min(145px,calc(100% - 160px));line-height:1.5}}
+
+/* The descent is scenery inside the hero, with the content always available. */
+.hero{position:relative;isolation:isolate}
+.hero-aerial{position:absolute;inset:0 0 0;z-index:-1;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 77% 51%,#19294755,transparent 62%);-webkit-mask-image:linear-gradient(#000 76%,transparent);mask-image:linear-gradient(#000 76%,transparent)}
+.aerial-city{display:block;width:100%;height:100%;opacity:.88}
+.hero-aerial:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#090b10ee 0%,#090b10cf 28%,#090b1020 75%,#090b1066),linear-gradient(0deg,#090b10 0%,transparent 30%,#090b1033)}
+.aerial-skip{position:absolute;top:16px;right:0;display:inline-flex;gap:10px;align-items:center;min-height:44px;padding:9px 14px;border:1px solid #b1c7f02e;border-radius:30px;background:#141e2bc2;color:#c1cde0;font:inherit;font-size:11px;cursor:pointer;z-index:2}
+.aerial-skip[hidden]{display:none}.aerial-skip:hover{background:#25354b;border-color:#a8c5ff66}.aerial-skip:focus-visible{outline:2px solid #a9c3ff;outline-offset:4px}
+.hero[data-aerial-state="settled"] .aerial-city{opacity:.46;transition:opacity .6s ease}
+@media(max-width:600px){.hero-aerial{inset:0 -10px 0}.hero-aerial:after{background:linear-gradient(90deg,#090b10c9,#090b1066),linear-gradient(0deg,#090b10,transparent 40%,#090b1044)}.aerial-skip{top:0;padding-inline:12px;font-size:10px}.hero[data-aerial-state="settled"] .aerial-city{opacity:.32}}
+html[data-reduced-motion="true"] .aerial-skip{display:none}
