@@ -320,3 +320,52 @@ if (beautyTrigger && beautyDialog && typeof beautyDialog.showModal === 'function
   document.fonts?.ready.then(rebuild);
   rebuild();
 })();
+
+// A small, eased movement confined to the hero; idle frames cost nothing.
+(() => {
+  const hero = document.querySelector('.hero');
+  const title = document.getElementById('hero-title');
+  if (!hero || !title) return;
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
+  let x = 0, y = 0, targetX = 0, targetY = 0, raf = null, last = 0;
+  const enabled = () => finePointer.matches && root.dataset.reducedMotion !== 'true' && !title.classList.contains('headline-active') && !document.hidden;
+  function paint() {
+    title.style.setProperty('--headline-x', `${x.toFixed(3)}px`);
+    title.style.setProperty('--headline-y', `${y.toFixed(3)}px`);
+  }
+  function step(now) {
+    const dt = last ? Math.min(now - last, 50) : 16;
+    last = now;
+    const ease = 1 - Math.exp(-dt / 110);
+    x += (targetX - x) * ease;
+    y += (targetY - y) * ease;
+    if (Math.abs(targetX - x) + Math.abs(targetY - y) < .02) {
+      x = targetX; y = targetY; raf = null; last = 0; paint(); return;
+    }
+    paint(); raf = requestAnimationFrame(step);
+  }
+  function schedule() { if (raf === null) raf = requestAnimationFrame(step); }
+  function reset(instant = false) {
+    targetX = targetY = 0;
+    if (instant) {
+      if (raf !== null) cancelAnimationFrame(raf);
+      raf = null; last = 0; x = y = 0; paint();
+    } else schedule();
+  }
+  hero.addEventListener('pointermove', event => {
+    if (event.pointerType !== 'mouse' || !enabled()) return;
+    const box = hero.getBoundingClientRect();
+    const clamp = n => Math.max(-1, Math.min(1, n));
+    targetX = clamp((event.clientX - box.left) / box.width * 2 - 1) * 9;
+    targetY = clamp((event.clientY - box.top) / box.height * 2 - 1) * 6;
+    schedule();
+  }, {passive:true});
+  hero.addEventListener('pointerleave', () => reset());
+  window.addEventListener('blur', () => reset(true));
+  window.addEventListener('resize', () => reset(true));
+  window.addEventListener('scroll', () => reset(), {passive:true});
+  document.addEventListener('visibilitychange', () => reset(true));
+  finePointer.addEventListener('change', () => reset(true));
+  new MutationObserver(() => { if (!enabled()) reset(true); }).observe(root, {attributes:true, attributeFilter:['data-reduced-motion']});
+  new MutationObserver(() => { if (!enabled()) reset(true); }).observe(title, {attributes:true, attributeFilter:['class']});
+})();

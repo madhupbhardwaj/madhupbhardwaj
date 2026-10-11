@@ -243,3 +243,8 @@ html{scrollbar-gutter:stable}
 }
 @media(max-width:380px){.header .wordmark{font-size:20px}.header-tools{margin-left:10px}}
 @media(max-width:600px){.header nav{flex-wrap:wrap;justify-content:flex-start;column-gap:14px;row-gap:6px}}
+
+/* Independent translation preserves the entrance and letter-scatter animations. */
+.hero #hero-title{translate:var(--headline-x,0px) var(--headline-y,0px)}
+html[data-reduced-motion="true"] .hero #hero-title,.hero #hero-title.headline-active{translate:none}
+@media(hover:none),(pointer:coarse){.hero #hero-title{translate:none}}
