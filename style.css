@@ -102,9 +102,9 @@ body{background:radial-gradient(ellipse 65% 600px at 80% 0,rgba(57,83,143,.14),t
 .header{height:82px;margin-top:22px;padding-inline:24px;border:1px solid rgba(190,208,255,.13);border-radius:18px;background:rgba(20,25,35,.88);box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 12px 40px rgba(0,0,0,.15)}
 .header-note{color:#a6aebb}
 .project-visual{border:1px solid rgba(188,207,255,.16);border-radius:20px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 20px 60px rgba(0,0,0,.18);transition:border-color .3s,box-shadow .3s}
-.slate-visual,.set-visual,.papers-visual{background:radial-gradient(ellipse at 70% 5%,rgba(95,122,184,.13),transparent 65%),rgba(18,23,33,.94);color:#d3dced}
+.slate-visual,.set-visual,.classroll-visual,.papers-visual{background:radial-gradient(ellipse at 70% 5%,rgba(95,122,184,.13),transparent 65%),rgba(18,23,33,.94);color:#d3dced}
 .project-visual:hover{border-color:rgba(153,181,255,.36);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 22px 65px rgba(0,0,0,.28)}
-.project-visual:after,.set-visual:after,.papers-visual:after{background:linear-gradient(transparent,#121721)}
+.project-visual:after,.set-visual:after,.classroll-visual:after,.papers-visual:after{background:linear-gradient(transparent,#121721)}
 .project-art,.set-visual .project-art{border-color:#333c50;background:#141a24;box-shadow:0 26px 70px rgba(0,0,0,.5)}
 .visual-top,.visual-caption{color:#c1cbdd}
 .visit-pill{background:rgba(29,37,53,.94);color:#edf2ff;border:1px solid rgba(189,207,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
@@ -242,3 +242,4 @@ html{scrollbar-gutter:stable}
  .quote-card{margin-bottom:50px}
 }
 @media(max-width:380px){.header .wordmark{font-size:20px}.header-tools{margin-left:10px}}
+@media(max-width:600px){.header nav{flex-wrap:wrap;justify-content:flex-start;column-gap:14px;row-gap:6px}}
