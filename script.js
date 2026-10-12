@@ -526,3 +526,47 @@ if (beautyTrigger && beautyDialog && typeof beautyDialog.showModal === 'function
     if (resizeFrame === null) resizeFrame = requestAnimationFrame(()=>{resizeFrame=null;resize();});
   }).observe(hero);
 })();
+
+// The dock follows the chapter in view; anchors remain fully usable without JS.
+(() => {
+  const dock = document.querySelector('.section-dock');
+  if (!dock) return;
+  const items = [...dock.querySelectorAll('a[href^="#"]')].map(link => ({
+    link, section: document.getElementById(link.getAttribute('href').slice(1))
+  })).filter(item => item.section);
+  let frame = null;
+  let selected = items.find(item => item.link.getAttribute('href') === location.hash) || null;
+  function update() {
+    frame = null;
+    const available = items.filter(item => item.section.getClientRects().length > 0);
+    for (const item of items) item.link.hidden = !available.includes(item);
+    dock.style.setProperty('--dock-count',String(available.length));
+    const line = Math.min(innerHeight * .3, 210);
+    let active = null;
+    for (const item of available) if (item.section.getBoundingClientRect().top <= line) active = item;
+    if (scrollY + innerHeight >= document.documentElement.scrollHeight - 8) active = available.at(-1);
+    if (selected && available.includes(selected)) {
+      const rect = selected.section.getBoundingClientRect();
+      if (rect.bottom > 85 && rect.top < innerHeight - 80) active = selected;
+    }
+    for (const item of items) {
+      if (item === active) item.link.setAttribute('aria-current','location');
+      else item.link.removeAttribute('aria-current');
+    }
+  }
+  function schedule() { if (frame === null) frame = requestAnimationFrame(update); }
+  window.addEventListener('scroll',schedule,{passive:true});
+  window.addEventListener('resize',schedule);
+  dock.addEventListener('click',event => {
+    const link = event.target.closest('a');
+    if (link) { selected = items.find(item => item.link === link) || null; schedule(); }
+  });
+  window.addEventListener('hashchange',()=>{ selected=items.find(item=>item.link.getAttribute('href')===location.hash)||null; schedule(); });
+  const followReading = () => { selected=null; schedule(); };
+  window.addEventListener('wheel',followReading,{passive:true});
+  window.addEventListener('touchmove',followReading,{passive:true});
+  window.addEventListener('keydown',event=>{if(['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].includes(event.key)) followReading();});
+  document.fonts?.ready.then(schedule);
+  if ('ResizeObserver' in window) new ResizeObserver(schedule).observe(document.getElementById('main'));
+  update();
+})();
