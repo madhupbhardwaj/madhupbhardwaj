@@ -1,0 +1,41 @@
+/* Walking pixel character, fixed at the bottom of the page. */
+.hero-walker {
+  position: fixed;
+  left: 0;
+  bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.hero-hint {
+  margin-bottom: 4px;
+  font: 500 12px/1 var(--font, system-ui, sans-serif);
+  letter-spacing: 0.02em;
+  color: var(--muted, #aaa5b0);
+  white-space: nowrap;
+  transition: opacity 0.5s ease;
+}
+.hero-walker[data-moved="true"] .hero-hint { opacity: 0; }
+
+.hero-sprite {
+  width: 64px;
+  height: 64px;
+  background: url("assets/hero-walk.png") 0 0 / 384px 64px no-repeat;
+  image-rendering: pixelated;
+}
+.hero-sprite.is-walking { animation: hero-walk 0.6s steps(6) infinite; }
+
+@keyframes hero-walk {
+  from { background-position-x: 0; }
+  to   { background-position-x: -384px; }
+}
+
+/* Touch screens have no arrow keys, and reduced-motion users opt out. */
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .hero-walker { display: none; }
+}
+html[data-reduced-motion="true"] .hero-walker { display: none; }
