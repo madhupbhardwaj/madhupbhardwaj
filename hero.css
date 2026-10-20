@@ -28,6 +28,7 @@
   image-rendering: pixelated;
 }
 .hero-sprite.is-walking { animation: hero-walk 0.6s steps(6) infinite; }
+.hero-sprite.is-jumping { animation: none; transform-origin: center bottom; scale: 0.9 1.15; }
 
 @keyframes hero-walk {
   from { background-position-x: 0; }
