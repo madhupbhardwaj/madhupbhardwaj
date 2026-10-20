@@ -23,10 +23,12 @@
   let y = 0;              // current height above ground (positive = up)
   let vy = 0;             // vertical velocity (positive = upward)
   let grounded = true;    // true when on the ground
+  let jumpRequested = false; // buffered jump input, consumed in tick
 
   const LEFT = ['ArrowLeft', 'a', 'A'];
   const RIGHT = ['ArrowRight', 'd', 'D'];
   const JUMP = ['ArrowUp', 'w', 'W'];
+  const ALL_KEYS = [...LEFT, ...RIGHT, ...JUMP];
 
   const maxX = () => Math.max(0, document.documentElement.clientWidth - SIZE);
   const render = () => {
@@ -45,6 +47,8 @@
   const tick = (now) => {
     const dt = Math.min(0.05, (now - last) / 1000);
     last = now;
+
+    // Horizontal movement
     const left = LEFT.some((k) => keys.has(k));
     const right = RIGHT.some((k) => keys.has(k));
     const moving = left !== right;
@@ -52,6 +56,15 @@
       dir = right ? 1 : -1;
       x = Math.max(0, Math.min(maxX(), x + dir * SPEED * dt));
     }
+
+    // Consume buffered jump input
+    if (jumpRequested && grounded) {
+      grounded = false;
+      vy = JUMP_VELOCITY;
+      sprite.classList.add('is-jumping');
+      sprite.classList.remove('is-walking');
+    }
+    jumpRequested = false;
 
     // Jump physics
     if (!grounded) {
@@ -65,7 +78,7 @@
       }
     }
 
-    sprite.classList.toggle('is-walking', moving && grounded);
+    if (grounded) sprite.classList.toggle('is-walking', moving);
     render();
     const active = keys.size || !grounded;
     raf = active ? requestAnimationFrame(tick) : 0;
@@ -76,32 +89,20 @@
     if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); }
   };
 
-  const jump = () => {
-    if (!grounded) return;
-    grounded = false;
-    vy = JUMP_VELOCITY;
-    sprite.classList.add('is-jumping');
-    sprite.classList.remove('is-walking');
-    start();
-  };
-
   const stop = () => {
     keys.clear();
+    jumpRequested = false;
     sprite.classList.remove('is-walking');
   };
 
   addEventListener('keydown', (e) => {
-    if (![...LEFT, ...RIGHT, ...JUMP].includes(e.key) || blocked(e)) return;
+    if (!ALL_KEYS.includes(e.key) || blocked(e)) return;
     if (getComputedStyle(walker).display === 'none') return;
-    walker.dataset.moved = 'true';
-
-    if (JUMP.includes(e.key)) {
-      e.preventDefault();   // prevent page scroll
-      jump();
-      return;
-    }
-
+    if (JUMP.includes(e.key)) e.preventDefault(); // prevent page scroll
+    if (e.repeat) return;                          // ignore held-key repeats
     keys.add(e.key);
+    walker.dataset.moved = 'true';
+    if (JUMP.includes(e.key)) jumpRequested = true;
     start();
   });
   addEventListener('keyup', (e) => keys.delete(e.key));
