@@ -432,7 +432,8 @@ if (beautyTrigger && beautyDialog && typeof beautyDialog.showModal === 'function
 (() => {
   const screen = document.querySelector('.boot-screen');
   const replay = document.querySelector('.boot-replay');
-  if (!screen || typeof screen.showModal !== 'function') {
+  // Turned off by data-boot-intro="off" on <html>; the Replay intro button then stays hidden too.
+  if (!screen || typeof screen.showModal !== 'function' || root.dataset.bootIntro === 'off') {
     root.classList.remove('boot-pending'); return;
   }
   const key = 'portfolio-boot-intro-v1';
