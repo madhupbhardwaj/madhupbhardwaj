@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" prefix="og: https://ogp.me/ns#" data-site-version="boot-20261012">
+<html lang="en" prefix="og: https://ogp.me/ns#" data-site-version="boot-20261012" data-boot-intro="off">
+<!-- BOOT INTRO: set data-boot-intro="on" above to bring back the sys / init intro and its Replay intro button. -->
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101112">
@@ -8,10 +9,10 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232e64ff'/%3E%3Cpath d='M15 46V18l17 17 17-17v28' fill='none' stroke='white' stroke-width='6'/%3E%3C/svg%3E">
   <script>try{const p=localStorage.getItem("portfolio-reduced-motion");document.documentElement.dataset.reducedMotion=String(p===null?matchMedia("(prefers-reduced-motion: reduce)").matches:p==="true")}catch{document.documentElement.dataset.reducedMotion=String(matchMedia("(prefers-reduced-motion: reduce)").matches)}</script>
   <script>
-  (()=>{try{if(!sessionStorage.getItem('portfolio-boot-intro-v1')&&document.documentElement.dataset.reducedMotion!=='true'&&!location.hash){document.documentElement.classList.add('boot-pending');setTimeout(()=>document.documentElement.classList.remove('boot-pending'),3800)}}catch{}})();
+  (()=>{try{if(document.documentElement.dataset.bootIntro!=='off'&&!sessionStorage.getItem('portfolio-boot-intro-v1')&&document.documentElement.dataset.reducedMotion!=='true'&&!location.hash){document.documentElement.classList.add('boot-pending');setTimeout(()=>document.documentElement.classList.remove('boot-pending'),3800)}}catch{}})();
   </script>
   <style>html.boot-pending body{visibility:hidden}</style>
-  <link rel="stylesheet" href="style.css?v=projects-20261101"><script src="script.js?v=boot-20261012" defer></script>
+  <link rel="stylesheet" href="style.css?v=projects-20261101"><script src="script.js?v=boot-off-20261104" defer></script>
   <script src="assets/mobius.js?v=mobius-trial-1" defer></script>
   <link rel="stylesheet" href="cursor.css?v=cursor-1"><script src="cursor.js?v=cursor-1" defer></script>
   <link rel="stylesheet" href="hero.css?v=hero-1"><script src="hero.js?v=hero-2" defer></script>
